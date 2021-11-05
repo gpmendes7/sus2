@@ -1,6 +1,7 @@
 package app;
 
 import java.io.IOException;
+import java.text.Normalizer;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -46,7 +47,7 @@ public class CriarCSVRedomeModificado {
 	    	offset += pacientesBanco.size(); 
 	    	System.out.println("offset: " + offset);
 	    }
-		  
+	    
 		em.close(); 
 		emf.close();
 		
@@ -55,14 +56,14 @@ public class CriarCSVRedomeModificado {
 		Set<String> chaves = new HashSet<>(); 
 		List<SusRedomeCSV> registrosSemCopia = new ArrayList<SusRedomeCSV>();
 	
-		SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.S");
-		SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy-MM-dd");
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSSSS");
 		  
 		for (SusRedomeCSV registro : registros) { 
-			Date dataNascimentoRedome = sdf1.parse(registro.getDataNascimento());
-			String dataNascimentoBanco = sdf2.format(dataNascimentoRedome);
+			Date dataNascimentoRedome = sdf.parse(registro.getDataNascimento());
+			String dataNascimentoBanco = sdf.format(dataNascimentoRedome);
+			String nomeCompleto = removeAcentos(registro.getNomeCompleto().toUpperCase()); 
 			
-			String chave = registro.getNomeCompleto().toUpperCase().trim() + dataNascimentoBanco;
+			String chave = nomeCompleto + dataNascimentoBanco;
 		  
 		    if(!chaves.contains(chave)) { 
 		    	chaves.add(chave);
@@ -70,14 +71,18 @@ public class CriarCSVRedomeModificado {
 		    } 
 		}
 		
-		
 		List<SusRedomeModificadoCSV> registrosModificados = new ArrayList<SusRedomeModificadoCSV>();
 		
 		int excluidos = 0;
+		
+		System.out.println("registrosSemCopia: " + registrosSemCopia.size());
 				
-		for (SusRedomeCSV registro : registrosSemCopia) {   
-		     List<Paciente> result = pacientes.stream().filter(p -> p.getNomeCompleto().equalsIgnoreCase(registro.getNomeCompleto())
-		    		 											&& sdf1.format(p.getDataNascimento()).equals(registro.getDataNascimento()))
+		for (SusRedomeCSV registro : registrosSemCopia) {  
+			 Date dataNascimentoRedome = sdf.parse(registro.getDataNascimento());
+			 String dataNascimentoBanco = sdf.format(dataNascimentoRedome);
+			
+		     List<Paciente> result = pacientes.stream().filter(p -> (removeAcentos(p.getNomeCompleto()).equalsIgnoreCase(registro.getNomeCompleto())
+		    		 										   && sdf.format(p.getDataNascimento()).equals(dataNascimentoBanco)))
 		    		 								 	.collect(Collectors.toList());
 		  
 		     if(result.isEmpty()) { 
@@ -90,8 +95,8 @@ public class CriarCSVRedomeModificado {
 		     } else {
 		    	 Paciente paciente = result.get(0);
 				 
-				 String dataNotificacao = paciente.getDataNotificacao() != null ? sdf1.format(paciente.getDataNotificacao()) : null;
-				 String dataTeste = paciente.getDataTeste() != null ? sdf1.format(paciente.getDataTeste()) : null;
+				 String dataNotificacao = paciente.getDataNotificacao() != null ? sdf.format(paciente.getDataNotificacao()) : null;
+				 String dataTeste = paciente.getDataTeste() != null ? sdf.format(paciente.getDataTeste()) : null;
 		 
 				 String idade = paciente.getDataNotificacao() != null ? calcularIdade(paciente.getDataNotificacao(), paciente.getDataNascimento()) : "";
 				 
@@ -121,9 +126,13 @@ public class CriarCSVRedomeModificado {
 				                                               "estadoTeste", "evolucaoCaso", "observacaoExclusao"));
 		
 		System.out.println("excluidos: " + excluidos);
-		System.out.println("registrosSemCopia (Identificados): " + registrosSemCopia.size());
 		
 		SusRedomeModificadoCSVHandler.criarCSV("./arquivos/csv/Sus_REDOME(Modificado).csv", registrosModificados);
+	}
+	
+	public static String removeAcentos(String string) {
+		return Normalizer.normalize(string, Normalizer.Form.NFD)
+						 .replaceAll("[^\\p{ASCII}]", "");
 	}
 	
 	private static String calcularIdade(Date dataNotificacao, Date dataNascimento) throws ParseException {
@@ -147,13 +156,9 @@ public class CriarCSVRedomeModificado {
 
 		for (SusRedomeCSV registro : registros) {
 			SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.S");
+			SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSSSS");
 			Date dataNascimentoRedome = sdf1.parse(registro.getDataNascimento());
-
-			SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSX");
-			String dataNascimentoTemp = sdf2.format(dataNascimentoRedome);
-			
-			SimpleDateFormat sdf3 = new SimpleDateFormat("yyyy-MM-dd");
-			String dataNascimentoBanco = sdf3.format(dataNascimentoRedome);
+			String dataNascimentoBanco = sdf2.format(dataNascimentoRedome);
 
 			jpql.append("\n ('" + registro.getNomeCompleto() + "','" + dataNascimentoBanco + "') ");
 

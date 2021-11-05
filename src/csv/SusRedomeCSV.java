@@ -12,28 +12,12 @@ public class SusRedomeCSV {
 	private String etnia;
 	private String nomeMae;
 	
-	public SusRedomeCSV() {
-	}
-
-	public SusRedomeCSV(String campo1, String municipio, String nomeCompleto, String cpf, String dataNascimento,
-			String municipioNotificacao, String racaCor, String etnia, String nomeMae) {
-		this.campo1 = campo1;
-		this.municipio = municipio;
-		this.nomeCompleto = nomeCompleto;
-		this.cpf = cpf;
-		this.dataNascimento = dataNascimento;
-		this.municipioNotificacao = municipioNotificacao;
-		this.racaCor = racaCor;
-		this.etnia = etnia;
-		this.nomeMae = nomeMae;
-	}
-
 	public String getCampo1() {
 		return campo1;
 	}
 
 	public void setCampo1(String campo1) {
-		this.campo1 = campo1;
+		this.campo1 = campo1.trim();
 	}
 
 	public String getMunicipio() {
@@ -41,7 +25,7 @@ public class SusRedomeCSV {
 	}
 
 	public void setMunicipio(String municipio) {
-		this.municipio = municipio;
+		this.municipio = municipio.trim();
 	}
 
 	public String getNomeCompleto() {
@@ -49,7 +33,7 @@ public class SusRedomeCSV {
 	}
 
 	public void setNomeCompleto(String nomeCompleto) {
-		this.nomeCompleto = nomeCompleto;
+		this.nomeCompleto = nomeCompleto.trim();
 	}
 
 	public String getCpf() {
@@ -57,7 +41,7 @@ public class SusRedomeCSV {
 	}
 
 	public void setCpf(String cpf) {
-		this.cpf = cpf;
+		this.cpf = cpf.trim();
 	}
 
 	public String getDataNascimento() {
@@ -65,7 +49,7 @@ public class SusRedomeCSV {
 	}
 
 	public void setDataNascimento(String dataNascimento) {
-		this.dataNascimento = dataNascimento;
+		this.dataNascimento = dataNascimento.trim();
 	}
 
 	public String getMunicipioNotificacao() {
@@ -73,7 +57,7 @@ public class SusRedomeCSV {
 	}
 
 	public void setMunicipioNotificacao(String municipioNotificacao) {
-		this.municipioNotificacao = municipioNotificacao;
+		this.municipioNotificacao = municipioNotificacao.trim();
 	}
 
 	public String getRacaCor() {
@@ -81,7 +65,7 @@ public class SusRedomeCSV {
 	}
 
 	public void setRacaCor(String racaCor) {
-		this.racaCor = racaCor;
+		this.racaCor = racaCor.trim();
 	}
 
 	public String getEtnia() {
@@ -89,7 +73,7 @@ public class SusRedomeCSV {
 	}
 
 	public void setEtnia(String etnia) {
-		this.etnia = etnia;
+		this.etnia = etnia.trim();
 	}
 
 	public String getNomeMae() {
@@ -97,7 +81,7 @@ public class SusRedomeCSV {
 	}
 
 	public void setNomeMae(String nomeMae) {
-		this.nomeMae = nomeMae;
+		this.nomeMae = nomeMae.trim();
 	}
 
 	@Override

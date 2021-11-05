@@ -9,7 +9,7 @@ public class SusRedomeModificadoCSV {
 	private String dataNascimento;
 	private String municipioNotificacao;
 	private String racaCor;
-	private String etinia;
+	private String etnia;
 	private String nomeMae;
 	private String dataNotificacao;
 	private String idade;
@@ -22,9 +22,9 @@ public class SusRedomeModificadoCSV {
 	
 	public SusRedomeModificadoCSV() {
 	}
-
+	
 	public SusRedomeModificadoCSV(String campo1, String municipio, String nomeCompleto, String cpf,
-			String dataNascimento, String municipioNotificacao, String racaCor, String etinia, String nomeMae,
+			String dataNascimento, String municipioNotificacao, String racaCor, String etnia, String nomeMae,
 			String dataNotificacao, String idade, String resultadoTeste, String dataTeste, String tipoTeste,
 			String estadoTeste, String evolucaoCaso, String observacaoExclusao) {
 		this.campo1 = campo1;
@@ -34,7 +34,7 @@ public class SusRedomeModificadoCSV {
 		this.dataNascimento = dataNascimento;
 		this.municipioNotificacao = municipioNotificacao;
 		this.racaCor = racaCor;
-		this.etinia = etinia;
+		this.etnia = etnia;
 		this.nomeMae = nomeMae;
 		this.dataNotificacao = dataNotificacao;
 		this.idade = idade;
@@ -51,7 +51,7 @@ public class SusRedomeModificadoCSV {
 	}
 
 	public void setCampo1(String campo1) {
-		this.campo1 = campo1;
+		this.campo1 = campo1.trim();
 	}
 
 	public String getMunicipio() {
@@ -59,7 +59,7 @@ public class SusRedomeModificadoCSV {
 	}
 
 	public void setMunicipio(String municipio) {
-		this.municipio = municipio;
+		this.municipio = municipio.trim();
 	}
 
 	public String getNomeCompleto() {
@@ -67,7 +67,7 @@ public class SusRedomeModificadoCSV {
 	}
 
 	public void setNomeCompleto(String nomeCompleto) {
-		this.nomeCompleto = nomeCompleto;
+		this.nomeCompleto = nomeCompleto.trim();
 	}
 
 	public String getCpf() {
@@ -75,7 +75,7 @@ public class SusRedomeModificadoCSV {
 	}
 
 	public void setCpf(String cpf) {
-		this.cpf = cpf;
+		this.cpf = cpf.trim();
 	}
 
 	public String getDataNascimento() {
@@ -83,7 +83,7 @@ public class SusRedomeModificadoCSV {
 	}
 
 	public void setDataNascimento(String dataNascimento) {
-		this.dataNascimento = dataNascimento;
+		this.dataNascimento = dataNascimento.trim();
 	}
 
 	public String getMunicipioNotificacao() {
@@ -91,7 +91,7 @@ public class SusRedomeModificadoCSV {
 	}
 
 	public void setMunicipioNotificacao(String municipioNotificacao) {
-		this.municipioNotificacao = municipioNotificacao;
+		this.municipioNotificacao = municipioNotificacao.trim();
 	}
 
 	public String getRacaCor() {
@@ -99,15 +99,15 @@ public class SusRedomeModificadoCSV {
 	}
 
 	public void setRacaCor(String racaCor) {
-		this.racaCor = racaCor;
+		this.racaCor = racaCor.trim();
 	}
 
-	public String getEtinia() {
-		return etinia;
+	public String getEtnia() {
+		return etnia;
 	}
 
-	public void setEtinia(String etinia) {
-		this.etinia = etinia;
+	public void setEtnia(String etnia) {
+		this.etnia = etnia.trim();
 	}
 
 	public String getNomeMae() {
@@ -115,7 +115,7 @@ public class SusRedomeModificadoCSV {
 	}
 
 	public void setNomeMae(String nomeMae) {
-		this.nomeMae = nomeMae;
+		this.nomeMae = nomeMae.trim();
 	}
 
 	public String getDataNotificacao() {
@@ -123,7 +123,7 @@ public class SusRedomeModificadoCSV {
 	}
 
 	public void setDataNotificacao(String dataNotificacao) {
-		this.dataNotificacao = dataNotificacao;
+		this.dataNotificacao = dataNotificacao.trim();
 	}
 
 	public String getIdade() {
@@ -131,7 +131,7 @@ public class SusRedomeModificadoCSV {
 	}
 
 	public void setIdade(String idade) {
-		this.idade = idade;
+		this.idade = idade.trim();
 	}
 
 	public String getResultadoTeste() {
@@ -139,7 +139,7 @@ public class SusRedomeModificadoCSV {
 	}
 
 	public void setResultadoTeste(String resultadoTeste) {
-		this.resultadoTeste = resultadoTeste;
+		this.resultadoTeste = resultadoTeste.trim();
 	}
 
 	public String getDataTeste() {
@@ -147,7 +147,7 @@ public class SusRedomeModificadoCSV {
 	}
 
 	public void setDataTeste(String dataTeste) {
-		this.dataTeste = dataTeste;
+		this.dataTeste = dataTeste.trim();
 	}
 
 	public String getTipoTeste() {
@@ -155,7 +155,7 @@ public class SusRedomeModificadoCSV {
 	}
 
 	public void setTipoTeste(String tipoTeste) {
-		this.tipoTeste = tipoTeste;
+		this.tipoTeste = tipoTeste.trim();
 	}
 
 	public String getEstadoTeste() {
@@ -163,7 +163,7 @@ public class SusRedomeModificadoCSV {
 	}
 
 	public void setEstadoTeste(String estadoTeste) {
-		this.estadoTeste = estadoTeste;
+		this.estadoTeste = estadoTeste.trim();
 	}
 
 	public String getEvolucaoCaso() {
@@ -171,7 +171,7 @@ public class SusRedomeModificadoCSV {
 	}
 
 	public void setEvolucaoCaso(String evolucaoCaso) {
-		this.evolucaoCaso = evolucaoCaso;
+		this.evolucaoCaso = evolucaoCaso.trim();
 	}
 
 	public String getObservacaoExclusao() {
@@ -179,7 +179,7 @@ public class SusRedomeModificadoCSV {
 	}
 
 	public void setObservacaoExclusao(String observacaoExclusao) {
-		this.observacaoExclusao = observacaoExclusao;
+		this.observacaoExclusao = observacaoExclusao.trim();
 	}
 	
 }
