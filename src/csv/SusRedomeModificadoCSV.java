@@ -19,6 +19,8 @@ public class SusRedomeModificadoCSV {
 	private String estadoTeste;
 	private String evolucaoCaso;
 	private String observacaoExclusao;
+	private String sexo;
+	private String observacaoUso;
 	
 	public SusRedomeModificadoCSV() {
 	}
@@ -26,7 +28,7 @@ public class SusRedomeModificadoCSV {
 	public SusRedomeModificadoCSV(String campo1, String municipio, String nomeCompleto, String cpf,
 			String dataNascimento, String municipioNotificacao, String racaCor, String etnia, String nomeMae,
 			String dataNotificacao, String idade, String resultadoTeste, String dataTeste, String tipoTeste,
-			String estadoTeste, String evolucaoCaso, String observacaoExclusao) {
+			String estadoTeste, String evolucaoCaso, String observacaoExclusao, String sexo, String observacaoUso) {
 		this.campo1 = campo1;
 		this.municipio = municipio;
 		this.nomeCompleto = nomeCompleto;
@@ -44,6 +46,8 @@ public class SusRedomeModificadoCSV {
 		this.estadoTeste = estadoTeste;
 		this.evolucaoCaso = evolucaoCaso;
 		this.observacaoExclusao = observacaoExclusao;
+		this.sexo = sexo;
+		this.observacaoUso = observacaoUso;
 	}
 
 	public String getCampo1() {
@@ -181,5 +185,20 @@ public class SusRedomeModificadoCSV {
 	public void setObservacaoExclusao(String observacaoExclusao) {
 		this.observacaoExclusao = observacaoExclusao.trim();
 	}
-	
+
+	public String getSexo() {
+		return sexo;
+	}
+
+	public void setSexo(String sexo) {
+		this.sexo = sexo;
+	}
+
+	public String getObservacaoUso() {
+		return observacaoUso;
+	}
+
+	public void setObservacaoUso(String observacaoUso) {
+		this.observacaoUso = observacaoUso;
+	}
 }

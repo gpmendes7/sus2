@@ -29,7 +29,9 @@ public class SusRedomeModificadoCSVHandler {
 				             "racaCor", "etnia",  "nomeMae",
 				             "dataNotificacao", "idade", "resultadoTeste",
 				             "dataTeste", "tipoTeste",
-				             "estadoTeste", "evolucaoCaso", "observacaoExclusao"};
+				             "estadoTeste", "evolucaoCaso", "observacaoExclusao",
+				             "sexo", "observacaoUso"
+				             };
  
 		strategy.setColumnMapping(colunas);
 	}

@@ -1088,6 +1088,39 @@ public class Paciente {
 	public void setNotificacoes(List<Notificacao> notificacoes) {
 		this.notificacoes = notificacoes;
 	}
+	
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((dataNascimento == null) ? 0 : dataNascimento.hashCode());
+		result = prime * result + ((nomeCompleto == null) ? 0 : nomeCompleto.hashCode());
+		return result;
+	}
+
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Paciente other = (Paciente) obj;
+		if (dataNascimento == null) {
+			if (other.dataNascimento != null)
+				return false;
+		} else if (!dataNascimento.equals(other.dataNascimento))
+			return false;
+		if (nomeCompleto == null) {
+			if (other.nomeCompleto != null)
+				return false;
+		} else if (!nomeCompleto.equals(other.nomeCompleto))
+			return false;
+		return true;
+	}
+
 
 	@Override
 	public String toString() {

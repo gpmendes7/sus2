@@ -20,15 +20,13 @@ import javax.persistence.TypedQuery;
 import com.opencsv.exceptions.CsvDataTypeMismatchException;
 import com.opencsv.exceptions.CsvRequiredFieldEmptyException;
 
-import csv.PacienteCSV;
-import csv.PacienteCSVHandler;
 import csv.SusRedomeCSV;
 import csv.SusRedomeCSVHandler;
 import csv.SusRedomeModificadoCSV;
 import csv.SusRedomeModificadoCSVHandler;
 import modelo.Paciente;
 
-public class CriarCSVRedomeModificado {
+public class CriarCSVRedomeModificadoAtualizado {
 	
 	private static EntityManagerFactory emf;
 	private static EntityManager em;
@@ -47,62 +45,74 @@ public class CriarCSVRedomeModificado {
 		
 		em.close(); 
 		emf.close();
-		
-		List<PacienteCSV> pacientesBaseSivep = PacienteCSVHandler.carregarCSV("./arquivos/csv/Pacientes(SIVEP).csv");
-        
+		    
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSSSS");
         
         List<SusRedomeModificadoCSV> registrosModificados = new ArrayList<SusRedomeModificadoCSV>();
+        
+        int qtdSemDataNotificacao = 0;
+        int qtdSemResultadoTeste = 0;
+        int qtdObito = 0;
+        int qtdInternado = 0;
+        int qtdInternadoUTI = 0;
 		
 		for (SusRedomeCSV registro : registrosSemCopia) {  
-			 List<PacienteCSV> pacientesBaseSivepFiltrados = pacientesBaseSivep.stream().filter(p -> (removeAcentos(p.getNomeCompleto()).equalsIgnoreCase(registro.getNomeCompleto())
-					 																			&& p.getDataNascimento().equals(registro.getDataNascimento())))
-			 	                                                                        .collect(Collectors.toList());
-			 
-			 if(!pacientesBaseSivepFiltrados.isEmpty()) { 
-				 SusRedomeModificadoCSV registroModificado = new SusRedomeModificadoCSV(registro.getCampo1(), registro.getMunicipio(), registro.getNomeCompleto(), 
-							registro.getCpf(), registro.getDataNascimento(), registro.getMunicipioNotificacao(), 		    		 																
-							registro.getRacaCor(), registro.getEtnia(), registro.getNomeMae(), 
-							"", "", "", "", "", "", "", "Registro excluído por ter sido identificado na base do sivep original", "", "");				
-		    	 registrosModificados.add(registroModificado);
-			 } else {
-				 Date dataNascimentoRedome = sdf.parse(registro.getDataNascimento());
-				 String dataNascimentoBanco = sdf.format(dataNascimentoRedome);
+			 Date dataNascimentoRedome = sdf.parse(registro.getDataNascimento());
+			 String dataNascimentoBanco = sdf.format(dataNascimentoRedome);
 				 
-			     List<Paciente> pacientesBaseSusFiltrados = pacientesBaseSus.stream().filter(p -> (removeAcentos(p.getNomeCompleto()).equalsIgnoreCase(registro.getNomeCompleto())
+			 List<Paciente> pacientesBaseSusFiltrados = pacientesBaseSus.stream().filter(p -> (removeAcentos(p.getNomeCompleto()).equalsIgnoreCase(registro.getNomeCompleto())
 			    		 										   						     && sdf.format(p.getDataNascimento()).equals(dataNascimentoBanco)))
 			    		 								 							 .collect(Collectors.toList());
 			  
-			     if(pacientesBaseSusFiltrados.isEmpty()) { 
-			    	 SusRedomeModificadoCSV registroModificado = new SusRedomeModificadoCSV(registro.getCampo1(), registro.getMunicipio(), registro.getNomeCompleto(), 
-								registro.getCpf(), registro.getDataNascimento(), registro.getMunicipioNotificacao(), 		    		 																
-								registro.getRacaCor(), registro.getEtnia(), registro.getNomeMae(), 
-								"", "", "", "", "", "", "", "Registro excluído por não ter sido identificado do arquivo sus original", "", "");				
-			    	 registrosModificados.add(registroModificado);
-			     } else {
-			    	 Paciente paciente = pacientesBaseSusFiltrados.get(0);
-					 
-					 String dataNotificacao = paciente.getDataNotificacao() != null ? sdf.format(paciente.getDataNotificacao()) : null;
-					 String dataTeste = paciente.getDataTeste() != null ? sdf.format(paciente.getDataTeste()) : null;
-			 
-					 String idade = paciente.getDataNotificacao() != null ? calcularIdade(paciente.getDataNotificacao(), paciente.getDataNascimento()) : "";
-					 
-					 String observacaoExclusao = paciente.getDataNotificacao() == null || paciente.getResultadoTeste() == null  ? "Registro excluído por não ter dataNotificacao ou resultadoTesste" : "";
-					 
-				     SusRedomeModificadoCSV registroModificado = new SusRedomeModificadoCSV(registro.getCampo1(), registro.getMunicipio(), registro.getNomeCompleto(), 
-				    		 																registro.getCpf(), registro.getDataNascimento(), registro.getMunicipioNotificacao(), 		    		 																
-				    		 																registro.getRacaCor(), registro.getEtnia(), registro.getNomeMae(), 
-				    		 																dataNotificacao, idade, 	    		 															
-				    		 																paciente.getResultadoTeste(), dataTeste, paciente.getTipoTeste(),
-				    		 																paciente.getEstadoTeste(), paciente.getEvolucaoCaso(), observacaoExclusao,
-				    		 																paciente.getSexo(), "");
-				     
-				     registrosModificados.add(registroModificado);			    
-			     }		     
-			 }
-			 
-		     System.out.println("registrosModificados.size(): " + registrosModificados.size());
+		     if(!pacientesBaseSusFiltrados.isEmpty()) { 		    	 
+		    	 Paciente paciente = pacientesBaseSusFiltrados.get(0);
+				 
+				 String dataNotificacao = paciente.getDataNotificacao() != null ? sdf.format(paciente.getDataNotificacao()) : null;
+				 String dataTeste = paciente.getDataTeste() != null ? sdf.format(paciente.getDataTeste()) : null;
+		 
+				 String idade = paciente.getDataNotificacao() != null ? calcularIdade(paciente.getDataNotificacao(), paciente.getDataNascimento()) : "";
+				 
+				 String observacaoExclusao = "";
+				 
+				 if(paciente.getDataNotificacao() == null) {
+					 observacaoExclusao =  "Registro sem dataNotificacao.";
+					 qtdSemDataNotificacao++;
+				 }
+				 
+				 if(paciente.getResultadoTeste() == null || paciente.getResultadoTeste().equals("")) {
+					 observacaoExclusao +=  "Registro sem resultadoTeste.";
+					 qtdSemResultadoTeste++;
+				 }
+				 				
+				 if(paciente.getEvolucaoCaso().equals("Óbito")) {
+					observacaoExclusao += "Registro com evolucaoCaso Óbito.";		
+					qtdObito++;
+				 } else if(paciente.getEvolucaoCaso().equals("Internado")) {
+					 observacaoExclusao += "Registro com evolucaoCaso Internado.";
+					 qtdInternado++;
+				 } else if(paciente.getEvolucaoCaso().equals("Internado em UTI")) {
+					 observacaoExclusao += "Registro com evolucaoCaso Internado em UTI.";
+					 qtdInternadoUTI++;
+				 }								
+				 
+			     SusRedomeModificadoCSV registroModificado = new SusRedomeModificadoCSV(registro.getCampo1(), registro.getMunicipio(), registro.getNomeCompleto(), 
+			    		 																registro.getCpf(), registro.getDataNascimento(), registro.getMunicipioNotificacao(), 		    		 																
+			    		 																registro.getRacaCor(), registro.getEtnia(), registro.getNomeMae(), 
+			    		 																dataNotificacao, idade, 	    		 															
+			    		 																paciente.getResultadoTeste(), dataTeste, paciente.getTipoTeste(),
+			    		 																paciente.getEstadoTeste(), paciente.getEvolucaoCaso(), observacaoExclusao,
+			    		 																paciente.getSexo(), "");
+			     
+			     registrosModificados.add(registroModificado);	
+			     System.out.println("registrosModificados.size(): " + registrosModificados.size());  
+		     }		    	     
 		}
+		
+		System.out.println("qtdSemDataNotificacao: " + qtdSemDataNotificacao);  
+		System.out.println("qtdSemResultadoTeste: " + qtdSemResultadoTeste); 
+		System.out.println("qtdObito: " + qtdObito); 
+		System.out.println("qtdInternado: " + qtdInternado);
+		System.out.println("qtdInternadoUTI: " + qtdInternadoUTI); 
 		
 		registrosModificados.add(0, new SusRedomeModificadoCSV("campo1", "municipio", "nomeCompleto", 
 				                                               "cpf", "dataNascimento", "municipioNotificacao", 
@@ -110,7 +120,7 @@ public class CriarCSVRedomeModificado {
 				                                               "dataNotificacao", "idade", "resultadoTeste", "dataTeste", "tipoTeste",
 				                                               "estadoTeste", "evolucaoCaso", "observacaoExclusao", "sexo", "observacaoUso"));
 		
-		SusRedomeModificadoCSVHandler.criarCSV("./arquivos/csv/Sus_REDOME(Modificado).csv", registrosModificados);
+		SusRedomeModificadoCSVHandler.criarCSV("./arquivos/csv/Sus_REDOME(Modificado2).csv", registrosModificados);
 	}
 	
 	private static List<Paciente> carregarPacientes(List<SusRedomeCSV> registros) throws ParseException {

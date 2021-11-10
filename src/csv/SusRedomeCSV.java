@@ -12,6 +12,22 @@ public class SusRedomeCSV {
 	private String etnia;
 	private String nomeMae;
 	
+	public SusRedomeCSV() {
+	}
+	
+	public SusRedomeCSV(String campo1, String municipio, String nomeCompleto, String cpf, String dataNascimento,
+			String municipioNotificacao, String racaCor, String etnia, String nomeMae) {
+		this.campo1 = campo1;
+		this.municipio = municipio;
+		this.nomeCompleto = nomeCompleto;
+		this.cpf = cpf;
+		this.dataNascimento = dataNascimento;
+		this.municipioNotificacao = municipioNotificacao;
+		this.racaCor = racaCor;
+		this.etnia = etnia;
+		this.nomeMae = nomeMae;
+	}
+
 	public String getCampo1() {
 		return campo1;
 	}

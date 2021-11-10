@@ -59,17 +59,19 @@ public class ParearPacientesCOVIDComEvolucacoCasoInternado {
  			
 		}
 		
-		selecionadosComCovid.add(0, new SusRedomeModificadoCSV("campo1", "municipio", "nomeCompleto", 
-                "cpf", "dataNascimento", "municipioNotificacao", 
-                "racaCor", "etnia", "nomeMae", 
-                "dataNotificacao", "idade", "resultadoTeste", "dataTeste", "tipoTeste",
-                "estadoTeste", "evolucaoCaso", "observacaoExclusao"));
-		
-		selecionadosSemCovid.add(0, new SusRedomeModificadoCSV("campo1", "municipio", "nomeCompleto", 
-                "cpf", "dataNascimento", "municipioNotificacao", 
-                "racaCor", "etnia", "nomeMae", 
-                "dataNotificacao", "idade", "resultadoTeste", "dataTeste", "tipoTeste",
-                "estadoTeste", "evolucaoCaso", "observacaoExclusao"));
+		/*
+		 * selecionadosComCovid.add(0, new SusRedomeModificadoCSV("campo1", "municipio",
+		 * "nomeCompleto", "cpf", "dataNascimento", "municipioNotificacao", "racaCor",
+		 * "etnia", "nomeMae", "dataNotificacao", "idade", "resultadoTeste",
+		 * "dataTeste", "tipoTeste", "estadoTeste", "evolucaoCaso",
+		 * "observacaoExclusao"));
+		 * 
+		 * selecionadosSemCovid.add(0, new SusRedomeModificadoCSV("campo1", "municipio",
+		 * "nomeCompleto", "cpf", "dataNascimento", "municipioNotificacao", "racaCor",
+		 * "etnia", "nomeMae", "dataNotificacao", "idade", "resultadoTeste",
+		 * "dataTeste", "tipoTeste", "estadoTeste", "evolucaoCaso",
+		 * "observacaoExclusao"));
+		 */
 		
 		
 		SusRedomeModificadoCSVHandler.criarCSV("./arquivos/csv/Sus_REDOME(Modificado-PacienteEntre25E44AnosComCOVID-GrupoInternado).csv", selecionadosComCovid);
@@ -113,18 +115,19 @@ public class ParearPacientesCOVIDComEvolucacoCasoInternado {
  			
 		}
 		
-		selecionadosComCovid.add(0, new SusRedomeModificadoCSV("campo1", "municipio", "nomeCompleto", 
-                "cpf", "dataNascimento", "municipioNotificacao", 
-                "racaCor", "etnia", "nomeMae", 
-                "dataNotificacao", "idade", "resultadoTeste", "dataTeste", "tipoTeste",
-                "estadoTeste", "evolucaoCaso", "observacaoExclusao"));
-		
-		selecionadosSemCovid.add(0, new SusRedomeModificadoCSV("campo1", "municipio", "nomeCompleto", 
-                "cpf", "dataNascimento", "municipioNotificacao", 
-                "racaCor", "etnia", "nomeMae", 
-                "dataNotificacao", "idade", "resultadoTeste", "dataTeste", "tipoTeste",
-                "estadoTeste", "evolucaoCaso", "observacaoExclusao"));
-		
+		/*
+		 * selecionadosComCovid.add(0, new SusRedomeModificadoCSV("campo1", "municipio",
+		 * "nomeCompleto", "cpf", "dataNascimento", "municipioNotificacao", "racaCor",
+		 * "etnia", "nomeMae", "dataNotificacao", "idade", "resultadoTeste",
+		 * "dataTeste", "tipoTeste", "estadoTeste", "evolucaoCaso",
+		 * "observacaoExclusao"));
+		 * 
+		 * selecionadosSemCovid.add(0, new SusRedomeModificadoCSV("campo1", "municipio",
+		 * "nomeCompleto", "cpf", "dataNascimento", "municipioNotificacao", "racaCor",
+		 * "etnia", "nomeMae", "dataNotificacao", "idade", "resultadoTeste",
+		 * "dataTeste", "tipoTeste", "estadoTeste", "evolucaoCaso",
+		 * "observacaoExclusao"));
+		 */
 		
 		SusRedomeModificadoCSVHandler.criarCSV("./arquivos/csv/Sus_REDOME(Modificado-PacienteEntre45E56AnosComCOVID-GrupoInternado).csv", selecionadosComCovid);
 		SusRedomeModificadoCSVHandler.criarCSV("./arquivos/csv/Sus_REDOME(Modificado-PacienteEntre45E56AnosSemCOVID-GrupoInternado).csv", selecionadosSemCovid);
@@ -167,6 +170,7 @@ public class ParearPacientesCOVIDComEvolucacoCasoInternado {
  			
 		}
 		
+		/*
 		selecionadosComCovid.add(0, new SusRedomeModificadoCSV("campo1", "municipio", "nomeCompleto", 
                 "cpf", "dataNascimento", "municipioNotificacao", 
                 "racaCor", "etnia", "nomeMae", 
@@ -177,7 +181,7 @@ public class ParearPacientesCOVIDComEvolucacoCasoInternado {
                 "cpf", "dataNascimento", "municipioNotificacao", 
                 "racaCor", "etnia", "nomeMae", 
                 "dataNotificacao", "idade", "resultadoTeste", "dataTeste", "tipoTeste",
-                "estadoTeste", "evolucaoCaso", "observacaoExclusao"));
+                "estadoTeste", "evolucaoCaso", "observacaoExclusao"));*/
 		
 		
 		SusRedomeModificadoCSVHandler.criarCSV("./arquivos/csv/Sus_REDOME(Modificado-PacienteEntre57E81AnosComCOVID-GrupoInternado).csv", selecionadosComCovid);

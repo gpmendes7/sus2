@@ -58,7 +58,7 @@ public class ParearPacientesCOVIDComEvolucaoCasoUti {
 			}
  			
 		}
-		
+		/*
 		selecionadosComCovid.add(0, new SusRedomeModificadoCSV("campo1", "municipio", "nomeCompleto", 
                 "cpf", "dataNascimento", "municipioNotificacao", 
                 "racaCor", "etnia", "nomeMae", 
@@ -70,7 +70,7 @@ public class ParearPacientesCOVIDComEvolucaoCasoUti {
                 "racaCor", "etnia", "nomeMae", 
                 "dataNotificacao", "idade", "resultadoTeste", "dataTeste", "tipoTeste",
                 "estadoTeste", "evolucaoCaso", "observacaoExclusao"));
-		
+		*/
 		
 		SusRedomeModificadoCSVHandler.criarCSV("./arquivos/csv/Sus_REDOME(Modificado-PacienteEntre26E42AnosComCOVID-GrupoUti).csv", selecionadosComCovid);
 		SusRedomeModificadoCSVHandler.criarCSV("./arquivos/csv/Sus_REDOME(Modificado-PacienteEntre26E42AnosSemCOVID-GrupoUti).csv", selecionadosSemCovid);
@@ -113,6 +113,7 @@ public class ParearPacientesCOVIDComEvolucaoCasoUti {
  			
 		}
 		
+		/*
 		selecionadosComCovid.add(0, new SusRedomeModificadoCSV("campo1", "municipio", "nomeCompleto", 
                 "cpf", "dataNascimento", "municipioNotificacao", 
                 "racaCor", "etnia", "nomeMae", 
@@ -124,7 +125,7 @@ public class ParearPacientesCOVIDComEvolucaoCasoUti {
                 "racaCor", "etnia", "nomeMae", 
                 "dataNotificacao", "idade", "resultadoTeste", "dataTeste", "tipoTeste",
                 "estadoTeste", "evolucaoCaso", "observacaoExclusao"));
-		
+		*/
 		
 		SusRedomeModificadoCSVHandler.criarCSV("./arquivos/csv/Sus_REDOME(Modificado-PacienteEntre43E53AnosComCOVID-GrupoUti).csv", selecionadosComCovid);
 		SusRedomeModificadoCSVHandler.criarCSV("./arquivos/csv/Sus_REDOME(Modificado-PacienteEntre43E53AnosSemCOVID-GrupoUti).csv", selecionadosSemCovid);
@@ -166,7 +167,7 @@ public class ParearPacientesCOVIDComEvolucaoCasoUti {
 			}
  			
 		}
-		
+		/*
 		selecionadosComCovid.add(0, new SusRedomeModificadoCSV("campo1", "municipio", "nomeCompleto", 
                 "cpf", "dataNascimento", "municipioNotificacao", 
                 "racaCor", "etnia", "nomeMae", 
@@ -178,7 +179,7 @@ public class ParearPacientesCOVIDComEvolucaoCasoUti {
                 "racaCor", "etnia", "nomeMae", 
                 "dataNotificacao", "idade", "resultadoTeste", "dataTeste", "tipoTeste",
                 "estadoTeste", "evolucaoCaso", "observacaoExclusao"));
-		
+		*/
 		
 		SusRedomeModificadoCSVHandler.criarCSV("./arquivos/csv/Sus_REDOME(Modificado-PacienteEntre54E67AnosComCOVID-GrupoUti).csv", selecionadosComCovid);
 		SusRedomeModificadoCSVHandler.criarCSV("./arquivos/csv/Sus_REDOME(Modificado-PacienteEntre54E67AnosSemCOVID-GrupoUti).csv", selecionadosSemCovid);
