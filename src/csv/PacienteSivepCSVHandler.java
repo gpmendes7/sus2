@@ -16,31 +16,31 @@ import com.opencsv.bean.StatefulBeanToCsvBuilder;
 import com.opencsv.exceptions.CsvDataTypeMismatchException;
 import com.opencsv.exceptions.CsvRequiredFieldEmptyException;
 
-public class PacienteCSVHandler {
+public class PacienteSivepCSVHandler {
 	
-	private static ColumnPositionMappingStrategy<PacienteCSV> strategy;
+	private static ColumnPositionMappingStrategy<PacienteSivepCSV> strategy;
 	
 	static {
-		strategy = new ColumnPositionMappingStrategy<PacienteCSV>();
-		strategy.setType(PacienteCSV.class);
+		strategy = new ColumnPositionMappingStrategy<PacienteSivepCSV>();
+		strategy.setType(PacienteSivepCSV.class);
 
 		String[] colunas = { "nomeCompleto", "dataNascimento"};
  
 		strategy.setColumnMapping(colunas);
 	}
 	
-	public static List<PacienteCSV> carregarCSV(String nomeArquivo) throws IOException {
+	public static List<PacienteSivepCSV> carregarCSV(String nomeArquivo) throws IOException {
 		try (Reader reader = Files.newBufferedReader(Paths.get(nomeArquivo));) {
-			CsvToBean<PacienteCSV> csvToBean = new CsvToBeanBuilder<PacienteCSV>(reader).withMappingStrategy(strategy)
-					.withType(PacienteCSV.class).withSeparator(',').withSkipLines(1).build();
-			List<PacienteCSV> registros = csvToBean.parse();
+			CsvToBean<PacienteSivepCSV> csvToBean = new CsvToBeanBuilder<PacienteSivepCSV>(reader).withMappingStrategy(strategy)
+					.withType(PacienteSivepCSV.class).withSeparator(',').withSkipLines(1).build();
+			List<PacienteSivepCSV> registros = csvToBean.parse();
 			return registros;
 		}
 	}
 	
-	public static void criarCSV(String nomeArquivo, List<PacienteCSV> registros) throws IOException, CsvDataTypeMismatchException, CsvRequiredFieldEmptyException {
+	public static void criarCSV(String nomeArquivo, List<PacienteSivepCSV> registros) throws IOException, CsvDataTypeMismatchException, CsvRequiredFieldEmptyException {
 		try (Writer writer = Files.newBufferedWriter(Paths.get(nomeArquivo));) {
-			StatefulBeanToCsv<PacienteCSV> beanToCsv = new StatefulBeanToCsvBuilder<PacienteCSV>(writer)
+			StatefulBeanToCsv<PacienteSivepCSV> beanToCsv = new StatefulBeanToCsvBuilder<PacienteSivepCSV>(writer)
 														.withMappingStrategy(strategy)
 														.withSeparator(',')
 														.withQuotechar(CSVWriter.NO_QUOTE_CHARACTER)

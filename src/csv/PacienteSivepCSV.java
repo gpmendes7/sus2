@@ -1,14 +1,14 @@
 package csv;
 
-public class PacienteCSV {
+public class PacienteSivepCSV {
 	
 	private String nomeCompleto;
 	private String dataNascimento;
 	
-	public PacienteCSV() {
+	public PacienteSivepCSV() {
 	}
 	
-	public PacienteCSV(String nomeCompleto, String dataNascimento) {
+	public PacienteSivepCSV(String nomeCompleto, String dataNascimento) {
 		this.nomeCompleto = nomeCompleto;
 		this.dataNascimento = dataNascimento;
 	}

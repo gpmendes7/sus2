@@ -13,8 +13,8 @@ import java.util.Set;
 import com.opencsv.exceptions.CsvDataTypeMismatchException;
 import com.opencsv.exceptions.CsvRequiredFieldEmptyException;
 
-import csv.PacienteCSV;
-import csv.PacienteCSVHandler;
+import csv.PacienteSivepCSV;
+import csv.PacienteSivepCSVHandler;
 import csv.SusRedomeCSV;
 import csv.SusRedomeCSVHandler;
 
@@ -27,14 +27,14 @@ public class EliminarRegistrosPresentesNoSivep {
 		List<SusRedomeCSV> registrosSusSemCopia = obterRegistrosSemCopias(registrosSus);
 		System.out.println("registrosSusSemCopia.size(): " + registrosSusSemCopia.size());
 		
-		List<PacienteCSV> registrosSivep = PacienteCSVHandler.carregarCSV("./arquivos/csv/Pacientes(SIVEP).csv");
+		List<PacienteSivepCSV> registrosSivep = PacienteSivepCSVHandler.carregarCSV("./arquivos/csv/Pacientes(SIVEP).csv");
 		
 		List<SusRedomeCSV> registrosSusSemRegistrosDoSivep = new ArrayList<SusRedomeCSV>();
 					
 		for (SusRedomeCSV registroSusSemCopia : registrosSusSemCopia) {  
 			boolean registroSusPresenteNoSivep = false;
 			
-			for (PacienteCSV registroSivep : registrosSivep) {
+			for (PacienteSivepCSV registroSivep : registrosSivep) {
 				if(ehMesmoPaciente(registroSivep, registroSusSemCopia)) {
 					registroSusPresenteNoSivep = true;
 					break;
@@ -75,7 +75,7 @@ public class EliminarRegistrosPresentesNoSivep {
 		return registrosSemCopia;
 	}
 	
-	private static boolean ehMesmoPaciente(PacienteCSV paciente1, SusRedomeCSV paciente2) throws ParseException {
+	private static boolean ehMesmoPaciente(PacienteSivepCSV paciente1, SusRedomeCSV paciente2) throws ParseException {
 		String nomePaciente1 = removeAcentos(paciente1.getNomeCompleto().trim());
 		String nomePaciente2 = removeAcentos(paciente2.getNomeCompleto().trim());
 		
