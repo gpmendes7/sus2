@@ -45,25 +45,32 @@ public class ContagemRegistrosPresentesNoSus {
 		
 		int qtdRegistrosPresentesNoSus = 0;
 		
-		for (Paciente paciente : pacientesBaseSus) {
-			for (SusRedomeCSV registroSusSemCopia : registrosSusSemCopia) {
-				String nomePaciente = removeAcentos(paciente.getNomeCompleto().trim());
-				String nomeRegistroSusSemCopia = removeAcentos(registroSusSemCopia.getNomeCompleto().trim());
-				
-				SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-				String dataNascimentoSusFormatada = sdf.format(paciente.getDataNascimento());
-				
-				boolean temMesmoNome = nomePaciente.equalsIgnoreCase(nomeRegistroSusSemCopia);
-				boolean temMesmaData = dataNascimentoSusFormatada.equals(registroSusSemCopia.getDataNascimento());
-				
-				if(temMesmoNome && temMesmaData) {
+		for (SusRedomeCSV registroSusSemCopia : registrosSusSemCopia) {
+			for (Paciente paciente : pacientesBaseSus) {
+				if(ehMesmoPaciente(paciente, registroSusSemCopia)) {
 					qtdRegistrosPresentesNoSus++;
+					break;
 				}
 			}
+			
+			System.out.println("i: " + registrosSusSemCopia.indexOf(registroSusSemCopia));
 		}
 		
 		System.out.println("qtdRegistrosPresentesNoSus: " + qtdRegistrosPresentesNoSus);
 		
+	}
+	
+	private static boolean ehMesmoPaciente(Paciente paciente1, SusRedomeCSV paciente2) throws ParseException {
+		String nomePaciente1 = removeAcentos(paciente1.getNomeCompleto().trim());
+		String nomePaciente2 = removeAcentos(paciente2.getNomeCompleto().trim());
+		
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.S");
+		String dataNascimentoSusFormatada = sdf.format(paciente1.getDataNascimento());
+		
+		boolean temMesmoNome = nomePaciente1.equalsIgnoreCase(nomePaciente2);
+		boolean temMesmaData = dataNascimentoSusFormatada.equals(paciente2.getDataNascimento());
+
+		return temMesmoNome && temMesmaData;
 	}
 	
 	private static List<Paciente> carregarPacientes(List<SusRedomeCSV> registros) throws ParseException {

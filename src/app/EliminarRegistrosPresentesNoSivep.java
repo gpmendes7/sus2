@@ -45,7 +45,7 @@ public class EliminarRegistrosPresentesNoSivep {
 				registrosSusSemRegistrosDoSivep.add(registroSusSemCopia);
 			}
 
-			System.out.println("i: " + registrosSusSemCopia.indexOf(registroSusSemCopia));
+			//System.out.println("i: " + registrosSusSemCopia.indexOf(registroSusSemCopia));
 		}
 		
 		System.out.println("registrosSusSemRegistrosDoSivep.size(): " + registrosSusSemRegistrosDoSivep.size());

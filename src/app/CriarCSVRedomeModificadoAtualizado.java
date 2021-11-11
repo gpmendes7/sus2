@@ -7,10 +7,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -32,12 +29,9 @@ public class CriarCSVRedomeModificadoAtualizado {
 	private static EntityManager em;
 
 	public static void main(String[] args) throws IOException, ParseException, CsvDataTypeMismatchException, CsvRequiredFieldEmptyException {
-		List<SusRedomeCSV> registros = SusRedomeCSVHandler.carregarCSV("./arquivos/csv/Sus_REDOME.csv");
+		List<SusRedomeCSV> registros = SusRedomeCSVHandler.carregarCSV("./arquivos/csv/Sus_REDOME(SemRegistrosDoSivep).csv");
 		System.out.println("registros: " + registros.size());
-		
-		List<SusRedomeCSV> registrosSemCopia = obterRegistrosSemCopias(registros);
-		System.out.println("registrosSemCopia: " + registrosSemCopia.size());
-		
+	
 		emf = Persistence.createEntityManagerFactory("sus2"); 
 		em = emf.createEntityManager();
 		
@@ -45,8 +39,6 @@ public class CriarCSVRedomeModificadoAtualizado {
 		
 		em.close(); 
 		emf.close();
-		    
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSSSS");
         
         List<SusRedomeModificadoCSV> registrosModificados = new ArrayList<SusRedomeModificadoCSV>();
         
@@ -56,17 +48,19 @@ public class CriarCSVRedomeModificadoAtualizado {
         int qtdInternado = 0;
         int qtdInternadoUTI = 0;
 		
-		for (SusRedomeCSV registro : registrosSemCopia) {  
-			 Date dataNascimentoRedome = sdf.parse(registro.getDataNascimento());
-			 String dataNascimentoBanco = sdf.format(dataNascimentoRedome);
-				 
-			 List<Paciente> pacientesBaseSusFiltrados = pacientesBaseSus.stream().filter(p -> (removeAcentos(p.getNomeCompleto()).equalsIgnoreCase(registro.getNomeCompleto())
-			    		 										   						     && sdf.format(p.getDataNascimento()).equals(dataNascimentoBanco)))
-			    		 								 							 .collect(Collectors.toList());
-			  
-		     if(!pacientesBaseSusFiltrados.isEmpty()) { 		    	 
-		    	 Paciente paciente = pacientesBaseSusFiltrados.get(0);
-				 
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSSSS");
+        
+		for (SusRedomeCSV registro : registros) {  
+			 Paciente paciente = null;
+			 
+			 for (Paciente pacienteBaseSus : pacientesBaseSus) {
+				 if(ehMesmoPaciente(pacienteBaseSus, registro)) {
+					 paciente = pacienteBaseSus;
+					 break;
+				}
+			 }
+	  
+		     if(paciente != null) { 		    	 
 				 String dataNotificacao = paciente.getDataNotificacao() != null ? sdf.format(paciente.getDataNotificacao()) : null;
 				 String dataTeste = paciente.getDataTeste() != null ? sdf.format(paciente.getDataTeste()) : null;
 		 
@@ -77,21 +71,19 @@ public class CriarCSVRedomeModificadoAtualizado {
 				 if(paciente.getDataNotificacao() == null) {
 					 observacaoExclusao =  "Registro sem dataNotificacao.";
 					 qtdSemDataNotificacao++;
-				 }
-				 
-				 if(paciente.getResultadoTeste() == null || paciente.getResultadoTeste().equals("")) {
-					 observacaoExclusao +=  "Registro sem resultadoTeste.";
+				 }				 
+				 else if(paciente.getResultadoTeste() == null || paciente.getResultadoTeste().equals("")) {
+					 observacaoExclusao =  "Registro sem resultadoTeste.";
 					 qtdSemResultadoTeste++;
-				 }
-				 				
-				 if(paciente.getEvolucaoCaso().equals("Óbito")) {
-					observacaoExclusao += "Registro com evolucaoCaso Óbito.";		
+				 }			 				
+				 else if(paciente.getEvolucaoCaso().equals("Óbito")) {
+					observacaoExclusao = "Registro com evolucaoCaso Óbito.";		
 					qtdObito++;
 				 } else if(paciente.getEvolucaoCaso().equals("Internado")) {
-					 observacaoExclusao += "Registro com evolucaoCaso Internado.";
+					 observacaoExclusao = "Registro com evolucaoCaso Internado.";
 					 qtdInternado++;
 				 } else if(paciente.getEvolucaoCaso().equals("Internado em UTI")) {
-					 observacaoExclusao += "Registro com evolucaoCaso Internado em UTI.";
+					 observacaoExclusao = "Registro com evolucaoCaso Internado em UTI.";
 					 qtdInternadoUTI++;
 				 }								
 				 
@@ -103,11 +95,13 @@ public class CriarCSVRedomeModificadoAtualizado {
 			    		 																paciente.getEstadoTeste(), paciente.getEvolucaoCaso(), observacaoExclusao,
 			    		 																paciente.getSexo(), "");
 			     
-			     registrosModificados.add(registroModificado);	
-			     System.out.println("registrosModificados.size(): " + registrosModificados.size());  
-		     }		    	     
+			     registrosModificados.add(registroModificado);	 
+		     }
+		     
+		     System.out.println("i: " + registros.indexOf(registro));
 		}
 		
+	    System.out.println("registrosModificados.size(): " + registrosModificados.size()); 
 		System.out.println("qtdSemDataNotificacao: " + qtdSemDataNotificacao);  
 		System.out.println("qtdSemResultadoTeste: " + qtdSemResultadoTeste); 
 		System.out.println("qtdObito: " + qtdObito); 
@@ -120,7 +114,20 @@ public class CriarCSVRedomeModificadoAtualizado {
 				                                               "dataNotificacao", "idade", "resultadoTeste", "dataTeste", "tipoTeste",
 				                                               "estadoTeste", "evolucaoCaso", "observacaoExclusao", "sexo", "observacaoUso"));
 		
-		SusRedomeModificadoCSVHandler.criarCSV("./arquivos/csv/Sus_REDOME(Modificado2).csv", registrosModificados);
+		SusRedomeModificadoCSVHandler.criarCSV("./arquivos/csv/Sus_REDOME(Modificado).csv", registrosModificados);
+	}
+	
+	private static boolean ehMesmoPaciente(Paciente paciente1, SusRedomeCSV paciente2) throws ParseException {
+		String nomePaciente1 = removeAcentos(paciente1.getNomeCompleto().trim());
+		String nomePaciente2 = removeAcentos(paciente2.getNomeCompleto().trim());
+		
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.S");
+		String dataNascimentoSusFormatada = sdf.format(paciente1.getDataNascimento());
+		
+		boolean temMesmoNome = nomePaciente1.equalsIgnoreCase(nomePaciente2);
+		boolean temMesmaData = dataNascimentoSusFormatada.equals(paciente2.getDataNascimento());
+
+		return temMesmoNome && temMesmaData;
 	}
 	
 	private static List<Paciente> carregarPacientes(List<SusRedomeCSV> registros) throws ParseException {
@@ -130,34 +137,17 @@ public class CriarCSVRedomeModificadoAtualizado {
 		int offset = 0;
 		
 	    while ((pacientesLote = obterPacientes(registros, offset, 100000)).size() > 0) {
-	    	pacientes.addAll(pacientesLote);
+	    	for (Paciente pacienteLote : pacientesLote) {
+				if(!pacientes.contains(pacienteLote)) {
+					pacientes.add(pacienteLote);
+				}
+			}
+	    	
 	    	offset += pacientesLote.size(); 
 	    	System.out.println("offset: " + offset);
 	    }
 	    
 		return pacientes;
-	}
-	
-	private static List<SusRedomeCSV> obterRegistrosSemCopias(List<SusRedomeCSV> registros) throws ParseException {
-		Set<String> chaves = new HashSet<>(); 
-		List<SusRedomeCSV> registrosSemCopia = new ArrayList<SusRedomeCSV>();
-	
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSSSS");
-		  
-		for (SusRedomeCSV registro : registros) { 
-			Date dataNascimentoRedome = sdf.parse(registro.getDataNascimento());
-			String dataNascimentoBanco = sdf.format(dataNascimentoRedome);
-			String nomeCompleto = removeAcentos(registro.getNomeCompleto().toUpperCase()); 
-			
-			String chave = nomeCompleto + dataNascimentoBanco;
-		  
-		    if(!chaves.contains(chave)) { 
-		    	chaves.add(chave);
-		    	registrosSemCopia.add(registro); 
-		    } 
-		}
-		
-		return registrosSemCopia;
 	}
 	
 	private static String removeAcentos(String string) {
