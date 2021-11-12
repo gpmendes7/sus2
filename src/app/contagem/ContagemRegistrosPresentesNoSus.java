@@ -1,4 +1,4 @@
-package app;
+package app.contagem;
 
 import java.io.IOException;
 import java.text.Normalizer;

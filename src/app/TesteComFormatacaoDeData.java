@@ -4,7 +4,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class Teste {
+public class TesteComFormatacaoDeData {
 	public static void main(String[] args) throws ParseException {
 		SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSX");
 		Date dataNascimentoRedome1 = sdf1.parse("1990-12-12T02:00:00.000Z");

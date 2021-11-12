@@ -1,7 +1,8 @@
-package app;
+package app.preprocessamento;
+
+import static app.util.StringUtil.removeAcentos;
 
 import java.io.IOException;
-import java.text.Normalizer;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -148,11 +149,6 @@ public class CriarCSVRedomeModificado {
 	    }
 	    
 		return pacientes;
-	}
-	
-	private static String removeAcentos(String string) {
-		return Normalizer.normalize(string, Normalizer.Form.NFD)
-						 .replaceAll("[^\\p{ASCII}]", "");
 	}
 	
 	private static String calcularIdade(Date dataNotificacao, Date dataNascimento) throws ParseException {
