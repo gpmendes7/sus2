@@ -29,20 +29,26 @@ public class FiltrosPareamento {
 						 .collect(Collectors.toList());
 	}
 	
+	public static List<SusRedomeModificadoCSV> filtrarRegistrosSusNaoUsados(List<SusRedomeModificadoCSV> registrosSus) throws CsvDataTypeMismatchException, CsvRequiredFieldEmptyException, IOException {
+		//System.out.println("filtrarRegistrosSusNaoUsados");
+		
+		return registrosSus.stream()
+							.filter(r -> r.getObservacaoUso() == null || r.getObservacaoUso().equals(""))
+							.collect(Collectors.toList());
+		//System.out.println("registrosSusNaoUsados.size(): " + registrosSusNaoUsados.size());
+	}
+	
 	public static List<SusRedomeModificadoCSV> filtrarRegistrosSusPorFaixaEtaria(List<SusRedomeModificadoCSV> registrosSus, int idadeMinima, int idadeMaxima) throws CsvDataTypeMismatchException, CsvRequiredFieldEmptyException, IOException {
 		//System.out.println("filtrarRegistrosSusPorFaixaEtaria");
 		
-		List<SusRedomeModificadoCSV> registrosSusFiltradosPorFaixaEtaria = registrosSus.stream()
-																					   .filter(r -> Integer.parseInt(r.getIdade()) >= idadeMinima 
-																					           && Integer.parseInt(r.getIdade()) <= idadeMaxima)
-																					   .collect(Collectors.toList());
+		return registrosSus.stream()
+						   .filter(r -> Integer.parseInt(r.getIdade()) >= idadeMinima && Integer.parseInt(r.getIdade()) <= idadeMaxima)
+						   .collect(Collectors.toList());
 		//System.out.println("registrosSusFiltradosPorFaixaEtaria.size(): " + registrosSusFiltradosPorFaixaEtaria.size());
-		
+		/*
 		if(registrosSusFiltradosPorFaixaEtaria.size() >= 10) {
 			return registrosSusFiltradosPorFaixaEtaria;
-		}
-		
-		return registrosSus;
+		}*/
 	}
 	
 	public static List<SusRedomeModificadoCSV> filtrarRegistrosSusPorSexo(List<SusRedomeModificadoCSV> registrosSus, SivepRedomeModificadoCSV registroSivepFiltrado) throws CsvDataTypeMismatchException, CsvRequiredFieldEmptyException, IOException {
@@ -50,16 +56,15 @@ public class FiltrosPareamento {
 		
 		String sexoSus = converterSexoSivepParaSus(registroSivepFiltrado.getSexo());
 		
-		List<SusRedomeModificadoCSV> registrosSusFiltradosPorSexo = registrosSus.stream()
-																				.filter(r -> StringUtil.normalizarString(r.getSexo()).equals(StringUtil.normalizarString(sexoSus)))
-																				.collect(Collectors.toList());		
+		return registrosSus.stream()
+						   .filter(r -> StringUtil.normalizarString(r.getSexo()).equals(StringUtil.normalizarString(sexoSus)))
+						   .collect(Collectors.toList());		
 		//System.out.println("registrosSusFiltradosPorSexo.size(): " + registrosSusFiltradosPorSexo.size());
-		
+		/*
 		if(registrosSusFiltradosPorSexo.size() >= 10) {
 			return registrosSusFiltradosPorSexo;
 		}
-		
-		return registrosSus;
+		*/
 	}
 	
 	public static List<SusRedomeModificadoCSV> filtrarRegistrosSusPorDataNotificacao(List<SusRedomeModificadoCSV> registrosSus, SivepRedomeModificadoCSV registroSivepFiltrado) throws CsvDataTypeMismatchException, CsvRequiredFieldEmptyException, IOException, ParseException {
@@ -87,56 +92,56 @@ public class FiltrosPareamento {
 			}
 		}
 		
-		//System.out.println("registrosSusFiltradosPorDataNotificacao.size(): " + registrosSusFiltradosPorDataNotificacao.size());
+		return registrosSusFiltradosPorDataNotificacao;
 		
+		//System.out.println("registrosSusFiltradosPorDataNotificacao.size(): " + registrosSusFiltradosPorDataNotificacao.size());
+		/*
 		if(registrosSusFiltradosPorDataNotificacao.size() >= 10) {
 			return registrosSusFiltradosPorDataNotificacao;
 		}
-		
-		return registrosSus;
+		*/
 	}
 	
 	
-	private static List<SusRedomeModificadoCSV> filtrarRegistrosSusPorMunicipio(List<SusRedomeModificadoCSV> registros, String municipio) throws CsvDataTypeMismatchException, CsvRequiredFieldEmptyException, IOException {	
-		return registros.stream()
-						 .filter(r -> StringUtil.normalizarString(r.getMunicipio()).equals(StringUtil.normalizarString(municipio)))
-						 .collect(Collectors.toList());
+	public static List<SusRedomeModificadoCSV> filtrarRegistrosSusPorMunicipio(List<SusRedomeModificadoCSV> registrosSus, SivepRedomeModificadoCSV registroSivepFiltrado) throws CsvDataTypeMismatchException, CsvRequiredFieldEmptyException, IOException {	
+		return registrosSus.stream()
+						   .filter(r -> StringUtil.normalizarString(r.getMunicipio()).equals(StringUtil.normalizarString(registroSivepFiltrado.getMunicipio())))
+						   .collect(Collectors.toList());
 	}
 	
-	private static List<SusRedomeModificadoCSV> filtrarRegistrosSusPorAreaMunicipio(List<SusRedomeModificadoCSV> registros, String municipio) throws CsvDataTypeMismatchException, CsvRequiredFieldEmptyException, IOException {	
-		String[] regiao = RegioesAdministrativas.obterRegiaoMunicipio(municipio);
+	public static List<SusRedomeModificadoCSV> filtrarRegistrosSusPorAreaMunicipio(List<SusRedomeModificadoCSV> registrosSus, SivepRedomeModificadoCSV registroSivepFiltrado) throws CsvDataTypeMismatchException, CsvRequiredFieldEmptyException, IOException {	
+		String[] regiao = RegioesAdministrativas.obterRegiaoMunicipio(registroSivepFiltrado.getMunicipio());
 
-		List<SusRedomeModificadoCSV> registrosFiltro = new ArrayList<SusRedomeModificadoCSV>();
+		List<SusRedomeModificadoCSV> registrosSusFiltradosPorAreaMunicipio = new ArrayList<SusRedomeModificadoCSV>();
 		
-		for (SusRedomeModificadoCSV registro : registros) {
-			String municipioRegistroNormalizado = normalizarString(registro.getMunicipio());
+		for (SusRedomeModificadoCSV registroSus : registrosSus) {
+			String municipioRegistroNormalizado = normalizarString(registroSus.getMunicipio());
 			
 			for (String municipioRegiao : regiao) {
 				String municipioRegiaoNormalizado = normalizarString(municipioRegiao);
 						
 				if(municipioRegistroNormalizado.equals(municipioRegiaoNormalizado)) {
-					registrosFiltro.add(registro);
+					registrosSusFiltradosPorAreaMunicipio.add(registroSus);
 				}
 			}
 			
 		}
 		
-		return registrosFiltro;
+		return registrosSusFiltradosPorAreaMunicipio;
 	}
 	
+	/*
 	public static List<SusRedomeModificadoCSV> filtrarRegistrosSusPorMunicipioOuArea(List<SusRedomeModificadoCSV> registrosSus, SivepRedomeModificadoCSV registroSivepFiltrado) throws CsvDataTypeMismatchException, CsvRequiredFieldEmptyException, IOException {
 		//System.out.println("municipio: " + registroSivepFiltrado.getMunicipio());
 		
-		//System.out.println("filtrarRegistrosSusPorMunicipio");
+		//System.out.println("filtrarRegistrosSusPorMunicipioOuArea");
 		
 		List<SusRedomeModificadoCSV> registrosSusFiltradosPorMunicipio = filtrarRegistrosSusPorMunicipio(registrosSus, registroSivepFiltrado.getMunicipio());
 		//System.out.println("registrosSusFiltradosPorMunicipio.size(): " + registrosSusFiltradosPorMunicipio.size());
 		
 		if(registrosSusFiltradosPorMunicipio.size() >= 10) {
 			return registrosSusFiltradosPorMunicipio;
-		} else {
-			//System.out.println("filtrarRegistrosSusPorAreaMunicipio");
-			
+		} else {			
 			List<SusRedomeModificadoCSV> registrosSusFiltradosPorAreaMunicipio = filtrarRegistrosSusPorAreaMunicipio(registrosSus, registroSivepFiltrado.getMunicipio());
 			//System.out.println("registrosSusFiltradosPorAreaMunicipio.size(): " + registrosSusFiltradosPorAreaMunicipio.size());
 			
@@ -147,26 +152,26 @@ public class FiltrosPareamento {
 		
 		return registrosSus;
 	}
+	*/
 	
 	public static List<SusRedomeModificadoCSV> filtrarRegistrosSusPorRacaCor(List<SusRedomeModificadoCSV> registrosSus, SivepRedomeModificadoCSV registroSivepFiltrado) throws CsvDataTypeMismatchException, CsvRequiredFieldEmptyException, IOException {
 		//System.out.println("racaCor: " + registroSivepFiltrado.getRacaCor());
 		
 		//System.out.println("filtrarRegistrosSusPorRacaCor");
 		
-		List<SusRedomeModificadoCSV> registrosSusFiltradosSusPorRacaCor = registrosSus.stream()
-																					  .filter(r -> StringUtil.normalizarString(r.getRacaCor()).equals(StringUtil.normalizarString(registroSivepFiltrado.getRacaCor())))
-																					  .collect(Collectors.toList());
+		return registrosSus.stream()
+						   .filter(r -> StringUtil.normalizarString(r.getRacaCor()).equals(StringUtil.normalizarString(registroSivepFiltrado.getRacaCor())))
+						   .collect(Collectors.toList());
 		//System.out.println("registrosSusFiltradosSusPorRacaCor.size(): " + registrosSusFiltradosSusPorRacaCor.size());
-		
+	
+		/*
 		if(registrosSusFiltradosSusPorRacaCor.size() >= 10) {
 			return registrosSusFiltradosSusPorRacaCor;
-		}
-		
-		return registrosSus;
+		}*/
 	}
 	
-	public static List<SusRedomeModificadoCSV> filtrarRegistrosSusPorTipoTeste(List<SusRedomeModificadoCSV> registrosSus) throws CsvDataTypeMismatchException, CsvRequiredFieldEmptyException, IOException {	
-		//System.out.println("filtrarRegistrosSusPorTipoTeste");
+	public static List<SusRedomeModificadoCSV> filtrarRegistrosSusPorTipoTesteComCovid(List<SusRedomeModificadoCSV> registrosSus) throws CsvDataTypeMismatchException, CsvRequiredFieldEmptyException, IOException {	
+		//System.out.println("filtrarRegistrosSusPorTipoTesteComCovid");
 		
 		List<SusRedomeModificadoCSV> registrosSusFiltradosSusPorRTPCR = registrosSus.stream()
 																				    .filter(r -> StringUtil.normalizarString(r.getTipoTeste()).equals(StringUtil.normalizarString("RT-PCR")))
@@ -179,28 +184,44 @@ public class FiltrosPareamento {
 																					  .collect(Collectors.toList());
 		//System.out.println("registrosSusFiltradosSusPorAntigeno.size(): " + registrosSusFiltradosSusPorAntigeno.size());
 		
-		List<SusRedomeModificadoCSV> registrosSusFiltradosSusPorAnticorpo =registrosSus.stream()
+		List<SusRedomeModificadoCSV> registrosSusFiltradosSusPorAnticorpo = registrosSus.stream()
 																					   .filter(r -> StringUtil.normalizarString(r.getTipoTeste()).equals(StringUtil.normalizarString("TESTE RÁPIDO - ANTICORPO")))
 																					   .collect(Collectors.toList());
 		//System.out.println("registrosSusFiltradosSusPorAnticorpo.size(): " + registrosSusFiltradosSusPorAnticorpo.size());
 		
-		List<SusRedomeModificadoCSV> registrosSusFitradosPorTipoTeste = new ArrayList<SusRedomeModificadoCSV>();
-		registrosSusFitradosPorTipoTeste.addAll(registrosSusFiltradosSusPorRTPCR);
-		registrosSusFitradosPorTipoTeste.addAll(registrosSusFiltradosSusPorAntigeno);
-		registrosSusFitradosPorTipoTeste.addAll(registrosSusFiltradosSusPorAnticorpo);
+		List<SusRedomeModificadoCSV> registrosSusFitradosPorTipoTesteComCovid = new ArrayList<SusRedomeModificadoCSV>();
+		registrosSusFitradosPorTipoTesteComCovid.addAll(registrosSusFiltradosSusPorRTPCR);
+		registrosSusFitradosPorTipoTesteComCovid.addAll(registrosSusFiltradosSusPorAntigeno);
+		registrosSusFitradosPorTipoTesteComCovid.addAll(registrosSusFiltradosSusPorAnticorpo);
 		//System.out.println("registrosSusFitradosPorTipoTeste.size(): " + registrosSusFitradosPorTipoTeste.size());
 
+		/*
 		if(registrosSusFitradosPorTipoTeste.size() >= 10) {
 			return registrosSusFitradosPorTipoTeste;
-		}
+		}*/
 		
-		return registrosSus;
+		return registrosSusFitradosPorTipoTesteComCovid;
 	}
 	
-	public static List<SusRedomeModificadoCSV> filtrarRegistrosSusPorResultado(List<SusRedomeModificadoCSV> registros, String resultadoTeste) throws CsvDataTypeMismatchException, CsvRequiredFieldEmptyException, IOException {	
-		return registros.stream()
-						 .filter(r -> StringUtil.normalizarString(r.getResultadoTeste()).equals(StringUtil.normalizarString(resultadoTeste)))
-						 .collect(Collectors.toList());
+	public static List<SusRedomeModificadoCSV> filtrarRegistrosSusPorResultado(List<SusRedomeModificadoCSV> registrosSus, String resultadoTeste) throws CsvDataTypeMismatchException, CsvRequiredFieldEmptyException, IOException {	
+		//System.out.println("resultadoTeste: " + resultadoTeste); 
+		
+		//System.out.println("filtrarRegistrosSusPorResultado");
+		
+		return registrosSus.stream()
+					       .filter(r -> StringUtil.normalizarString(r.getResultadoTeste()).equals(StringUtil.normalizarString(resultadoTeste)))
+					       .collect(Collectors.toList());
+		//System.out.println("registrosSusFiltradosSusPorResultado.size(): " + registrosSusFiltradosSusPorResultado.size());
+		
+		//return registrosSusFiltradosSusPorResultado;
+	}
+	
+	public static boolean aplicouFiltro(List<SusRedomeModificadoCSV> registrosSus, List<SusRedomeModificadoCSV> registrosSusComFiltro) {
+		if(registrosSus.size() > registrosSusComFiltro.size() && registrosSus.containsAll(registrosSus)) {
+		   return true;
+		}
+	
+        return false;
 	}
 
 }
