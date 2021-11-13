@@ -111,7 +111,7 @@ public class FiltrosPareamento {
 	
 	public static List<SusRedomeModificadoCSV> filtrarRegistrosSusPorAreaMunicipio(List<SusRedomeModificadoCSV> registrosSus, SivepRedomeModificadoCSV registroSivepFiltrado) throws CsvDataTypeMismatchException, CsvRequiredFieldEmptyException, IOException {	
 		String[] regiao = RegioesAdministrativas.obterRegiaoMunicipio(registroSivepFiltrado.getMunicipio());
-
+System.out.println("registroSivepFiltrado.getMunicipio() " + registroSivepFiltrado.getMunicipio());
 		List<SusRedomeModificadoCSV> registrosSusFiltradosPorAreaMunicipio = new ArrayList<SusRedomeModificadoCSV>();
 		
 		for (SusRedomeModificadoCSV registroSus : registrosSus) {
@@ -216,8 +216,8 @@ public class FiltrosPareamento {
 		//return registrosSusFiltradosSusPorResultado;
 	}
 	
-	public static boolean aplicouFiltro(List<SusRedomeModificadoCSV> registrosSus, List<SusRedomeModificadoCSV> registrosSusComFiltro) {
-		if(registrosSus.size() > registrosSusComFiltro.size() && registrosSus.containsAll(registrosSus)) {
+	public static boolean aplicarFiltro(List<SusRedomeModificadoCSV> registrosSus, List<SusRedomeModificadoCSV> registrosSusComFiltro) {
+		if(registrosSus.size() > registrosSusComFiltro.size() && registrosSusComFiltro.size() >= 10 && registrosSus.containsAll(registrosSusComFiltro)) {
 		   return true;
 		}
 	

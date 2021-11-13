@@ -11,7 +11,7 @@ public class RegioesAdministrativas {
 													   "São Pedro da Aldeia", "Saquarema"};
 	
 	private static final String[] CENTRO_SUl = {"Areal", "Comendador Levy Gasparian", "Engenheiro Paulo de Frontin", 
-												"Mendes", "Miguel Pereira, Paracambi", "Paraíba do Sul",
+												"Mendes", "Miguel Pereira", "Paracambi", "Paraíba do Sul",
 												"Paty do Alferes", "Sapucaia", "Três Rios", "Vassouras"};
 	
 	private static final String[] MEDIO_PARAIBA = {"Barra do Piraí", "Barra Mansa", "Itatiaia",
