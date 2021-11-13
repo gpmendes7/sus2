@@ -33,7 +33,7 @@ public class EliminarRegistrosComObservacaoExclusao {
 		
 		registrosSelecionados.add(0, new SusRedomeModificadoCSV("campo1", "municipio", "nomeCompleto", 
 												                "cpf", "dataNascimento", "municipioNotificacao", 
-												                "racaCor", "etinia", "nomeMae", 
+												                "racaCor", "etnia", "nomeMae", 
 												                "dataNotificacao", "idade", "resultadoTeste", "dataTeste", "tipoTeste",
 												                "estadoTeste", "evolucaoCaso", "observacaoExclusao", "sexo", "observacaoUso"));
 

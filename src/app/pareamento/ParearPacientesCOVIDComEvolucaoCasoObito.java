@@ -1,12 +1,6 @@
 package app.pareamento;
 
-import static app.pareamento.FiltrosPareamento.aplicarFiltroPorDataNotificacao;
-import static app.pareamento.FiltrosPareamento.aplicarFiltroPorFaixaEtaria;
-import static app.pareamento.FiltrosPareamento.aplicarFiltroPorMunicipioOuArea;
-import static app.pareamento.FiltrosPareamento.aplicarFiltroPorRacaCor;
-import static app.pareamento.FiltrosPareamento.aplicarFiltroPorSexo;
 import static app.pareamento.FiltrosPareamento.*;
-import static app.pareamento.FiltrosPareamento.filtrarRegistrosSivepPorFaixaEtaria;
 
 import java.io.IOException;
 import java.text.ParseException;
@@ -34,7 +28,7 @@ public class ParearPacientesCOVIDComEvolucaoCasoObito {
 		selecionarPacientesEntre31E50Anos(registrosSivep, registrosSus);
 	}
 	
-	public static List<SusRedomeModificadoCSV> selecionarPacientesEntre31E50Anos(List<SivepRedomeModificadoCSV> registrosSivep, List<SusRedomeModificadoCSV> registrosSus) throws CsvDataTypeMismatchException, CsvRequiredFieldEmptyException, IOException, ParseException {	
+	public static void selecionarPacientesEntre31E50Anos(List<SivepRedomeModificadoCSV> registrosSivep, List<SusRedomeModificadoCSV> registrosSus) throws CsvDataTypeMismatchException, CsvRequiredFieldEmptyException, IOException, ParseException {	
 		//System.out.println("************************************** ");
 		//System.out.println("selecionarPacientesEntre31E50Anos");
 		
@@ -45,22 +39,32 @@ public class ParearPacientesCOVIDComEvolucaoCasoObito {
 		List<SusRedomeModificadoCSV> registrosSusFiltrados = registrosSus;
 		
 		for (SivepRedomeModificadoCSV registroSivepFiltrado : registrosSivepFiltrados) {
-			registrosSusFiltrados = aplicarFiltroPorFaixaEtaria(registrosSusFiltrados, 31, 50);
-			registrosSusFiltrados = aplicarFiltroPorSexo(registrosSusFiltrados, registroSivepFiltrado);
-			registrosSusFiltrados = aplicarFiltroPorDataNotificacao(registrosSusFiltrados, registroSivepFiltrado);
-			registrosSusFiltrados = aplicarFiltroPorMunicipioOuArea(registrosSusFiltrados, registroSivepFiltrado);
-			registrosSusFiltrados = aplicarFiltroPorRacaCor(registrosSusFiltrados, registroSivepFiltrado);
+			registrosSusFiltrados = filtrarRegistrosSusPorFaixaEtaria(registrosSusFiltrados, 31, 50);
+			registrosSusFiltrados = filtrarRegistrosSusPorSexo(registrosSusFiltrados, registroSivepFiltrado);
+			registrosSusFiltrados = filtrarRegistrosSusPorDataNotificacao(registrosSusFiltrados, registroSivepFiltrado);
+			registrosSusFiltrados = filtrarRegistrosSusPorMunicipioOuArea(registrosSusFiltrados, registroSivepFiltrado);
+			registrosSusFiltrados = filtrarRegistrosSusPorRacaCor(registrosSusFiltrados, registroSivepFiltrado);
+			registrosSusFiltrados = filtrarRegistrosSusPorTipoTeste(registrosSusFiltrados);
 			
 			System.out.println("registrosSusFiltrados.size(): " + registrosSusFiltrados.size());
+			
+			/*
 			
 			System.out.println("filtrarRegistrosSusPorResultado (Positivo)");
 			List<SusRedomeModificadoCSV> registrosSusFiltradosComResultadoPositivo = filtrarRegistrosSusPorResultado(registrosSusFiltrados, "Positivo");
 			System.out.println("registrosSusFiltradosComResultadoPositivo.size(): " + registrosSusFiltradosComResultadoPositivo.size());
 			
+			registrosSusFiltradosComResultadoPositivo.add(0, new SusRedomeModificadoCSV("campo1", "municipio", "nomeCompleto", 
+	                "cpf", "dataNascimento", "municipioNotificacao", 
+	                "racaCor", "etnia", "nomeMae", 
+	                "dataNotificacao", "idade", "resultadoTeste", "dataTeste", "tipoTeste",
+	                "estadoTeste", "evolucaoCaso", "observacaoExclusao", "sexo", "observacaoUso"));
+			SusRedomeModificadoCSVHandler.criarCSV("./arquivos/csv/Sus_REDOME(PacientesObitoEntre31E50AnosResultadoPositivo).csv", registrosSusFiltradosComResultadoPositivo);
+			
 			System.out.println("filtrarRegistrosSusPorResultado (Negativo)");
 			List<SusRedomeModificadoCSV> registrosSusFiltradosComResultadoNegativo = filtrarRegistrosSusPorResultado(registrosSusFiltrados, "Negativo");
 			System.out.println("registrosSusFiltradosComResultadoNegativo.size(): " + registrosSusFiltradosComResultadoNegativo.size());
-			
+			*/
 			//List<SusRedomeModificadoCSV> registrosSusFiltradosComResultadoPositivoETipoTeste  = aplicarFiltroPorTipoTeste(registrosSusFiltrados);
 			
 			break;
@@ -68,7 +72,7 @@ public class ParearPacientesCOVIDComEvolucaoCasoObito {
 		
 		//System.out.println("************************************** ");
 		
-		return registrosSusFiltrados;
+		
 	}
 
 }
