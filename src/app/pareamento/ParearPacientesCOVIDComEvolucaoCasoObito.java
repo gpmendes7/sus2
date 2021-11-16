@@ -18,6 +18,7 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import com.opencsv.exceptions.CsvDataTypeMismatchException;
 import com.opencsv.exceptions.CsvRequiredFieldEmptyException;
@@ -75,75 +76,19 @@ public class ParearPacientesCOVIDComEvolucaoCasoObito {
 			fileWriter.write("registro do sivep com nomeCompleto " + registroSivepFiltrado.getNomeCompleto() + "\n");
 			fileWriter.write("registro do sivep com dataNascimento " + registroSivepFiltrado.getDataNascimento() + "\n");
 			
-			List<SusRedomeModificadoCSV> registrosSusFiltradosPorFaixaEtaria = filtrarRegistrosSusPorFaixaEtaria(registrosSusFiltradosRegistroSivep, 31, 50);
-			if(aplicarFiltro(registrosSusFiltradosRegistroSivep, registrosSusFiltradosPorFaixaEtaria)) {
-			   registrosSusFiltradosRegistroSivep = registrosSusFiltradosPorFaixaEtaria;
-			   fileWriter.write("Filtrou registros do sus por faixa etária\n");
-			   //System.out.println("Filtrado por faixa etária");
-			}
-			
-			List<SusRedomeModificadoCSV> registrosSusFiltradosPorSexo = filtrarRegistrosSusPorSexo(registrosSusFiltradosRegistroSivep, registroSivepFiltrado);
-			if(aplicarFiltro(registrosSusFiltradosRegistroSivep, registrosSusFiltradosPorSexo)) {
-			   registrosSusFiltradosRegistroSivep = registrosSusFiltradosPorSexo;
-			   fileWriter.write("Filtrou registros do sus por sexo\n");
-			   //System.out.println("Filtrado por sexo");
-			}
-				
-			
-			List<SusRedomeModificadoCSV> registrosSusFiltradosPorDataNotificacao = filtrarRegistrosSusPorDataNotificacao(registrosSusFiltradosRegistroSivep, registroSivepFiltrado);
-			if(aplicarFiltro(registrosSusFiltradosRegistroSivep, registrosSusFiltradosPorDataNotificacao)) {
-			   registrosSusFiltradosRegistroSivep = registrosSusFiltradosPorDataNotificacao;
-			   fileWriter.write("Filtrou registros do sus por data de notificação\n");
-			   //System.out.println("Filtrado por 1 semana (para frente e trás) da data de notificação");
-			}
-
-			
-			List<SusRedomeModificadoCSV> registrosSusFiltradosPorMunicipio = filtrarRegistrosSusPorMunicipio(registrosSusFiltradosRegistroSivep, registroSivepFiltrado);
-			if(aplicarFiltro(registrosSusFiltradosRegistroSivep, registrosSusFiltradosPorMunicipio)) {
-			   registrosSusFiltradosRegistroSivep = registrosSusFiltradosPorMunicipio;
-			   fileWriter.write("Filtrou registros do sus por município\n");
-			   //System.out.println("Filtrado por município");
-			} else {	
-				List<SusRedomeModificadoCSV> registrosSusFiltradosPorAreaMunicipio = filtrarRegistrosSusPorAreaMunicipio(registrosSusFiltradosRegistroSivep, registroSivepFiltrado);
-				if(aplicarFiltro(registrosSusFiltradosRegistroSivep, registrosSusFiltradosPorAreaMunicipio)) {
-				   registrosSusFiltradosRegistroSivep = registrosSusFiltradosPorAreaMunicipio;
-				   fileWriter.write("Filtrou registros do sus por área ou município\n");
-				   //System.out.println("Filtrado por área ou município");
-				}	
-			}
-			
-			List<SusRedomeModificadoCSV> registrosSusFiltradosSusPorRacaCor = filtrarRegistrosSusPorRacaCor(registrosSusFiltradosRegistroSivep, registroSivepFiltrado);
-			if(aplicarFiltro(registrosSusFiltradosRegistroSivep, registrosSusFiltradosSusPorRacaCor)) {
-			   registrosSusFiltradosRegistroSivep = registrosSusFiltradosSusPorRacaCor;
-			   fileWriter.write("Filtrou registros do sus por raça cor\n");
-			   //System.out.println("Filtrado por raça cor");
-			}	
-			
-			List<SusRedomeModificadoCSV> registrosSusFitradosPorTipoTesteComCovid = filtrarRegistrosSusPorTipoTesteComCovid(registrosSusFiltradosRegistroSivep);
-			if(aplicarFiltro(registrosSusFiltradosRegistroSivep, registrosSusFitradosPorTipoTesteComCovid)) {
-			   registrosSusFiltradosRegistroSivep = registrosSusFitradosPorTipoTesteComCovid;
-			   fileWriter.write("Filtrou registros do sus por tipo teste RTPCR, Antígeno e Anticorpo (nesta ordem)\n");
-			   //System.out.println("Filtrado por tipo teste RTPCR, Antígeno e Anticorpo (nesta ordem)");
-			}	
+			registrosSusFiltradosRegistroSivep = aplicarFiltroPorFaixaEtaria(registrosSusFiltradosRegistroSivep);
+			registrosSusFiltradosRegistroSivep = aplicarFiltroPorSexo(registroSivepFiltrado, registrosSusFiltradosRegistroSivep);
+			registrosSusFiltradosRegistroSivep = aplicarFiltroPorDataNotificacao(registroSivepFiltrado, registrosSusFiltradosRegistroSivep);			
+			registrosSusFiltradosRegistroSivep = aplicarFiltroPorAreaOuMunicipio(registroSivepFiltrado, registrosSusFiltradosRegistroSivep);
+			registrosSusFiltradosRegistroSivep = aplicarFiltroPorRacaCor(registroSivepFiltrado, registrosSusFiltradosRegistroSivep);		
+			registrosSusFiltradosRegistroSivep = aplicarFiltroPorTipoTesteComCovid(registrosSusFiltradosRegistroSivep);
 			
 			fileWriter.write("Número de registros do sus filtrados (com resultado Positivo ou Negativo): " + registrosSusFiltradosRegistroSivep.size() + "\n");
-			//System.out.println("registrosSusFiltradosRegistroSivep.size(): " + registrosSusFiltradosRegistroSivep.size());
 			
-			List<SusRedomeModificadoCSV> registrosSusFiltradosComResultadoPositivo = filtrarRegistrosSusPorResultado(registrosSusFiltradosRegistroSivep, "Positivo");
-			registrosSusAtualizado.removeAll(registrosSusFiltradosComResultadoPositivo);
-			registrosSusFiltradosComResultadoPositivo.stream().forEach(r -> r.setObservacaoUso("Registro usado por Obito"));
-			registrosSusAtualizado.addAll(registrosSusFiltradosComResultadoPositivo);
-			fileWriter.write("Número de registros do sus filtrados com resultado Positivo: " + registrosSusFiltradosComResultadoPositivo.size() + "\n");
-			System.out.println("registrosSusFiltradosComResultadoPositivo.size(): " + registrosSusFiltradosComResultadoPositivo.size());
-			
-			List<SusRedomeModificadoCSV> registrosSusFiltradosComResultadoNegativo = filtrarRegistrosSusPorResultado(registrosSusFiltradosRegistroSivep, "Negativo");
-			registrosSusAtualizado.removeAll(registrosSusFiltradosComResultadoNegativo);
-			registrosSusFiltradosComResultadoNegativo.stream().forEach(r -> r.setObservacaoUso("Registro usado por Obito"));
-			registrosSusAtualizado.addAll(registrosSusFiltradosComResultadoNegativo);
-			fileWriter.write("Número de registros do sus filtrados com resultado Negativo: " + registrosSusFiltradosComResultadoNegativo.size() + "\n");
-			System.out.println("registrosSusFiltradosComResultadoNegativo.size(): " + registrosSusFiltradosComResultadoNegativo.size());
-			
+			List<SusRedomeModificadoCSV> registrosSusFiltradosComResultadoPositivo = aplicarFiltroPorResultadoPositivo(registrosSusAtualizado, registrosSusFiltradosRegistroSivep);
 			registrosSusTotaisFiltradosComResultadoPositivo.addAll(registrosSusFiltradosComResultadoPositivo);
+			
+			List<SusRedomeModificadoCSV> registrosSusFiltradosComResultadoNegativo = aplicarFiltroPorResultadoNegativo(registrosSusAtualizado, registrosSusFiltradosRegistroSivep);		
 			registrosSusTotaisFiltradosComResultadoNegativo.addAll(registrosSusFiltradosComResultadoNegativo);
 			
 			fileWriter.write("***************************\n");
@@ -171,8 +116,132 @@ public class ParearPacientesCOVIDComEvolucaoCasoObito {
 												                 "estadoTeste", "evolucaoCaso", "observacaoExclusao", "sexo", "observacaoUso"));
 		
 		SusRedomeModificadoCSVHandler.criarCSV("./arquivos/csv/Sus_REDOME(AposUsoObito).csv", registrosSusAtualizado);
+	}
+
+	private static List<SusRedomeModificadoCSV> aplicarFiltroPorResultadoNegativo(List<SusRedomeModificadoCSV> registrosSusAtualizado, List<SusRedomeModificadoCSV> registrosSusFiltradosRegistroSivep) throws CsvDataTypeMismatchException, CsvRequiredFieldEmptyException, IOException {
+		List<SusRedomeModificadoCSV> registrosSusFiltradosComResultadoNegativo = filtrarRegistrosSusPorResultado(registrosSusFiltradosRegistroSivep, "Negativo");
+		registrosSusAtualizado.removeAll(registrosSusFiltradosComResultadoNegativo);
+
+		registrosSusFiltradosComResultadoNegativo.stream().limit(5).forEach(r -> r.setObservacaoUso("Registro usado por Obito"));
 		
-		//System.out.println("************************************** ");
+		registrosSusAtualizado.addAll(registrosSusFiltradosComResultadoNegativo);
+		fileWriter.write("Número de registros do sus filtrados com resultado Negativo: " + registrosSusFiltradosComResultadoNegativo.size() + "\n");
+		System.out.println("registrosSusFiltradosComResultadoNegativo.size(): " + registrosSusFiltradosComResultadoNegativo.size());
+		
+		List<SusRedomeModificadoCSV> registrosUsados = registrosSusFiltradosComResultadoNegativo.stream()
+																								.filter(r -> r.getObservacaoUso() != null && !r.getObservacaoUso().equals(""))
+																								.collect(Collectors.toList());
+		fileWriter.write("Número de registros do sus com resultado Negativo usados: " + registrosUsados.size() + "\n");
+		System.out.println("registrosUsados.size(): " + registrosUsados.size());
+		
+		return registrosUsados;
+	}
+
+	private static List<SusRedomeModificadoCSV> aplicarFiltroPorResultadoPositivo(List<SusRedomeModificadoCSV> registrosSusAtualizado, List<SusRedomeModificadoCSV> registrosSusFiltradosRegistroSivep) throws CsvDataTypeMismatchException, CsvRequiredFieldEmptyException, IOException {
+		List<SusRedomeModificadoCSV> registrosSusFiltradosComResultadoPositivo = filtrarRegistrosSusPorResultado(registrosSusFiltradosRegistroSivep, "Positivo");
+		registrosSusAtualizado.removeAll(registrosSusFiltradosComResultadoPositivo);
+		
+		registrosSusFiltradosComResultadoPositivo.stream().limit(5).forEach(r -> r.setObservacaoUso("Registro usado por Obito"));
+		
+		registrosSusAtualizado.addAll(registrosSusFiltradosComResultadoPositivo);
+		fileWriter.write("Número de registros do sus filtrados com resultado Positivo: " + registrosSusFiltradosComResultadoPositivo.size() + "\n");
+		System.out.println("registrosSusFiltradosComResultadoPositivo.size(): " + registrosSusFiltradosComResultadoPositivo.size());
+		
+		List<SusRedomeModificadoCSV> registrosUsados = registrosSusFiltradosComResultadoPositivo.stream()
+																								.filter(r -> r.getObservacaoUso() != null && !r.getObservacaoUso().equals(""))
+																								.collect(Collectors.toList());
+		fileWriter.write("Número de registros do sus com resultado Positivo usados: " + registrosUsados.size() + "\n");
+		System.out.println("registrosUsados.size(): " + registrosUsados.size());
+		
+		return registrosUsados;
+	}
+
+	private static List<SusRedomeModificadoCSV> aplicarFiltroPorTipoTesteComCovid(List<SusRedomeModificadoCSV> registrosSusFiltradosRegistroSivep) throws CsvDataTypeMismatchException, CsvRequiredFieldEmptyException, IOException {
+		List<SusRedomeModificadoCSV> registrosSusFitradosPorTipoTesteComCovid = filtrarRegistrosSusPorTipoTesteComCovid(registrosSusFiltradosRegistroSivep);
+		if(aplicarFiltro(registrosSusFiltradosRegistroSivep, registrosSusFitradosPorTipoTesteComCovid)) {
+		   registrosSusFiltradosRegistroSivep = registrosSusFitradosPorTipoTesteComCovid;
+		   fileWriter.write("Filtrou registros do sus por tipo teste RTPCR, Antígeno e Anticorpo (nesta ordem)\n");
+		} else {
+		   fileWriter.write("Não filtrou registros do sus por tipo teste RTPCR, Antígeno e Anticorpo (nesta ordem)\n");
+		}
+		return registrosSusFiltradosRegistroSivep;
+	}
+
+	private static List<SusRedomeModificadoCSV> aplicarFiltroPorRacaCor(SivepRedomeModificadoCSV registroSivepFiltrado, List<SusRedomeModificadoCSV> registrosSusFiltradosRegistroSivep) throws CsvDataTypeMismatchException, CsvRequiredFieldEmptyException, IOException {
+		List<SusRedomeModificadoCSV> registrosSusFiltradosSusPorRacaCor = filtrarRegistrosSusPorRacaCor(registrosSusFiltradosRegistroSivep, registroSivepFiltrado);
+		if(aplicarFiltro(registrosSusFiltradosRegistroSivep, registrosSusFiltradosSusPorRacaCor)) {
+		   registrosSusFiltradosRegistroSivep = registrosSusFiltradosSusPorRacaCor;
+		   fileWriter.write("Filtrou registros do sus por raça cor\n");
+		} else {
+		   fileWriter.write("Não filtrou registros do sus por raça cor\n");
+		}
+		return registrosSusFiltradosRegistroSivep;
+	}
+
+	private static List<SusRedomeModificadoCSV> aplicarFiltroPorAreaOuMunicipio(SivepRedomeModificadoCSV registroSivepFiltrado, List<SusRedomeModificadoCSV> registrosSusFiltradosRegistroSivep) throws CsvDataTypeMismatchException, CsvRequiredFieldEmptyException, IOException {
+		boolean aplicouFiltroPorMunicipio = false;
+		boolean aplicouFiltroPorAreaMunicipio = false;
+		
+		List<SusRedomeModificadoCSV> registrosSusFiltradosPorMunicipio = filtrarRegistrosSusPorMunicipio(registrosSusFiltradosRegistroSivep, registroSivepFiltrado);
+		if(aplicarFiltro(registrosSusFiltradosRegistroSivep, registrosSusFiltradosPorMunicipio)) {
+		   registrosSusFiltradosRegistroSivep = registrosSusFiltradosPorMunicipio;
+		   fileWriter.write("Filtrou registros do sus por município\n");		   
+		   aplicouFiltroPorMunicipio = true;
+		} else {	
+			List<SusRedomeModificadoCSV> registrosSusFiltradosPorAreaMunicipio = filtrarRegistrosSusPorAreaMunicipio(registrosSusFiltradosRegistroSivep, registroSivepFiltrado);
+			if(aplicarFiltro(registrosSusFiltradosRegistroSivep, registrosSusFiltradosPorAreaMunicipio)) {
+			   registrosSusFiltradosRegistroSivep = registrosSusFiltradosPorAreaMunicipio;
+			   aplicouFiltroPorAreaMunicipio = true;
+			   fileWriter.write("Filtrou registros do sus por área\n");
+			}	
+		}
+		
+		if(!aplicouFiltroPorMunicipio && !aplicouFiltroPorAreaMunicipio) {
+			fileWriter.write("Não filtrou registros do sus por município ou por área\n");
+		}
+		return registrosSusFiltradosRegistroSivep;
+	}
+
+	private static List<SusRedomeModificadoCSV> aplicarFiltroPorDataNotificacao(SivepRedomeModificadoCSV registroSivepFiltrado, List<SusRedomeModificadoCSV> registrosSusFiltradosRegistroSivep) throws CsvDataTypeMismatchException, CsvRequiredFieldEmptyException, IOException, ParseException {
+		boolean aplicouFiltroPorDataNotificacao = false;
+		int numeroSemanas = 4;
+		
+		for (int i = 1; i <= numeroSemanas; i++) {
+			List<SusRedomeModificadoCSV> registrosSusFiltradosPorDataNotificacao = filtrarRegistrosSusPorDataNotificacao(registrosSusFiltradosRegistroSivep, registroSivepFiltrado, i);
+			if(aplicarFiltro(registrosSusFiltradosRegistroSivep, registrosSusFiltradosPorDataNotificacao)) {
+			   registrosSusFiltradosRegistroSivep = registrosSusFiltradosPorDataNotificacao;
+			   fileWriter.write("Filtrou registros do sus com " + i + " semana(s) para trás e para frente da data de notificação\n");
+			   aplicouFiltroPorDataNotificacao = true;
+			   break;
+			}
+		}
+		
+		if(!aplicouFiltroPorDataNotificacao) {
+			fileWriter.write("Não filtrou registros do sus por data de notificação\n");
+		}
+		return registrosSusFiltradosRegistroSivep;
+	}
+
+	private static List<SusRedomeModificadoCSV> aplicarFiltroPorSexo(SivepRedomeModificadoCSV registroSivepFiltrado, List<SusRedomeModificadoCSV> registrosSusFiltradosRegistroSivep) throws CsvDataTypeMismatchException, CsvRequiredFieldEmptyException, IOException {
+		List<SusRedomeModificadoCSV> registrosSusFiltradosPorSexo = filtrarRegistrosSusPorSexo(registrosSusFiltradosRegistroSivep, registroSivepFiltrado);
+		if(aplicarFiltro(registrosSusFiltradosRegistroSivep, registrosSusFiltradosPorSexo)) {
+		   registrosSusFiltradosRegistroSivep = registrosSusFiltradosPorSexo;
+		   fileWriter.write("Filtrou registros do sus por sexo\n");
+		} else {
+		   fileWriter.write("Não filtrou registros do sus por sexo\n");
+		}
+		return registrosSusFiltradosRegistroSivep;
+	}
+
+	private static List<SusRedomeModificadoCSV> aplicarFiltroPorFaixaEtaria(List<SusRedomeModificadoCSV> registrosSusFiltradosRegistroSivep) throws CsvDataTypeMismatchException, CsvRequiredFieldEmptyException, IOException {
+		List<SusRedomeModificadoCSV> registrosSusFiltradosPorFaixaEtaria = filtrarRegistrosSusPorFaixaEtaria(registrosSusFiltradosRegistroSivep, 31, 50);
+		if(aplicarFiltro(registrosSusFiltradosRegistroSivep, registrosSusFiltradosPorFaixaEtaria)) {
+		   registrosSusFiltradosRegistroSivep = registrosSusFiltradosPorFaixaEtaria;
+		   fileWriter.write("Filtrou registros do sus por faixa etária\n");
+		} else {
+		   fileWriter.write("Não filtrou registros do sus por faixa etária\n");
+		}
+		return registrosSusFiltradosRegistroSivep;
 	}
 
 }
