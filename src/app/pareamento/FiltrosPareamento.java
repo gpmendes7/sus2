@@ -131,29 +131,4 @@ public class FiltrosPareamento {
 					       .collect(Collectors.toList());
 	}
 	
-	public static boolean aplicarFiltro(List<SusRedomeModificadoCSV> registrosSus, List<SusRedomeModificadoCSV> registrosSusComFiltro) {
-		if(registrosSus.size() > registrosSusComFiltro.size()) {
-	       int qtdPositivo = 0;
-	       int qtdNegativo = 0;
-	       
-	       String resultadoPositivo = StringUtil.normalizarString("Positivo");
-	       String resultadoNegativo = StringUtil.normalizarString("Negativo");
-	       
-		   for (SusRedomeModificadoCSV registroSusComFiltro : registrosSusComFiltro) {
-			   String resultadoTeste = StringUtil.normalizarString(registroSusComFiltro.getResultadoTeste());
-			   if(resultadoTeste.equals(resultadoPositivo)) {
-				   qtdPositivo++;
-			   } else if(resultadoTeste.equals(resultadoNegativo)) {
-				   qtdNegativo++;
-			   }
-		   }
-		   
-		   if(qtdPositivo >=5 && qtdNegativo >= 5) {
-			   return true;
-		   }
-		}
-	
-        return false;
-	}
-
 }
