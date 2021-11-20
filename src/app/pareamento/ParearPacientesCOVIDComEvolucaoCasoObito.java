@@ -24,6 +24,7 @@ import com.opencsv.exceptions.CsvRequiredFieldEmptyException;
 
 import csv.SivepRedomeModificadoCSV;
 import csv.SivepRedomeModificadoCSVHandler;
+import csv.SusRedomeModificado2CSVHandler;
 import csv.SusRedomeModificadoCSV;
 import csv.SusRedomeModificadoCSVHandler;
 
@@ -116,7 +117,7 @@ public class ParearPacientesCOVIDComEvolucaoCasoObito {
 				}
 				
 				if(filtragem < 4) {
-					registrosSusFiltradosRegistroSivep = filtrarRegistrosSusPorMunicipio(registrosSusFiltradosRegistroSivep, registroSivepFiltrado);
+					registrosSusFiltradosRegistroSivep = filtrarRegistrosSusPorMunicipio(registrosSusFiltradosRegistroSivep, registroSivepFiltrado);	
 					fileWriter.write("Filtrou " + registrosSusFiltradosRegistroSivep.size() + " registros do sus por município\n");
 				} else {
 					fileWriter.write("Não filtrou registros do sus por município\n");
@@ -174,11 +175,13 @@ public class ParearPacientesCOVIDComEvolucaoCasoObito {
 				fileWriter.write("Registros do sus filtrados usados vão ser desmarcados para uso posterior para filtro de outro registro sivep!\n");	
 				
 				registrosSusAtualizado.removeAll(registrosSusFiltradosRegistroSivepComResultadoPositivo);			
-				registrosSusFiltradosRegistroSivepComResultadoPositivo.stream().forEach(r -> r.setObservacaoUso(""));			
+				registrosSusFiltradosRegistroSivepComResultadoPositivo.stream().forEach(r -> r.setObservacaoUso(""));		
+				registrosSusFiltradosRegistroSivepComResultadoPositivo.stream().forEach(r -> r.setFiltroAreaMunicipio(""));
 				registrosSusAtualizado.addAll(registrosSusFiltradosRegistroSivepComResultadoPositivo);	
 				
 				registrosSusAtualizado.removeAll(registrosSusFiltradosRegistroSivepComResultadoNegativo);			
-				registrosSusFiltradosRegistroSivepComResultadoNegativo.stream().forEach(r -> r.setObservacaoUso(""));			
+				registrosSusFiltradosRegistroSivepComResultadoNegativo.stream().forEach(r -> r.setObservacaoUso(""));		
+				registrosSusFiltradosRegistroSivepComResultadoNegativo.stream().forEach(r -> r.setFiltroAreaMunicipio(""));
 				registrosSusAtualizado.addAll(registrosSusFiltradosRegistroSivepComResultadoNegativo);	
 			} else {
 				fileWriter.write("Número final de registros do sus usados com resultado Positivo: " + registrosSusFiltradosRegistroSivepComResultadoPositivo.size() + "\n");
@@ -193,21 +196,31 @@ public class ParearPacientesCOVIDComEvolucaoCasoObito {
 		
 
 		
-		registrosSusTotaisFiltradosComResultadoPositivo.add(0, new SusRedomeModificadoCSV("campo1", "municipio", "nomeCompleto", 
+		registrosSusTotaisFiltradosComResultadoPositivo.add(0, new SusRedomeModificadoCSV("campo1", "municipio", "filtroAreaMunicipio", "nomeCompleto", 
 																	                "cpf", "dataNascimento", "municipioNotificacao", 
 																	                "racaCor", "etnia", "nomeMae", 
 																	                "dataNotificacao", "idade", "resultadoTeste", "dataTeste", "tipoTeste",
 																	                "estadoTeste", "evolucaoCaso", "observacaoExclusao", "sexo", "observacaoUso"));
-		SusRedomeModificadoCSVHandler.criarCSV("./arquivos/csv/Sus_REDOME(PacientesObitoEntre31E50AnosResultadoPositivo).csv", registrosSusTotaisFiltradosComResultadoPositivo);
+		SusRedomeModificado2CSVHandler.criarCSV("./arquivos/csv/Sus_REDOME(PacientesObitoEntre31E50AnosResultadoPositivo).csv", registrosSusTotaisFiltradosComResultadoPositivo);
 		
 		
-		registrosSusTotaisFiltradosComResultadoNegativo.add(0, new SusRedomeModificadoCSV("campo1", "municipio", "nomeCompleto", 
+		registrosSusTotaisFiltradosComResultadoNegativo.add(0, new SusRedomeModificadoCSV("campo1", "municipio", "filtroAreaMunicipio", "nomeCompleto", 
 																			             "cpf", "dataNascimento", "municipioNotificacao", 
 																			             "racaCor", "etnia", "nomeMae", 
 																			             "dataNotificacao", "idade", "resultadoTeste", "dataTeste", "tipoTeste",
 																			             "estadoTeste", "evolucaoCaso", "observacaoExclusao", "sexo", "observacaoUso"));
 		
-		SusRedomeModificadoCSVHandler.criarCSV("./arquivos/csv/Sus_REDOME(PacientesObitoEntre31E50AnosResultadoNegativo).csv", registrosSusTotaisFiltradosComResultadoNegativo);
+		SusRedomeModificado2CSVHandler.criarCSV("./arquivos/csv/Sus_REDOME(PacientesObitoEntre31E50AnosResultadoNegativo).csv", registrosSusTotaisFiltradosComResultadoNegativo);
+		
+		registrosSivepFiltrados.add(0, new SivepRedomeModificadoCSV("identificacao", "nomeCompleto", "dataNascimento", "idade", 
+                "municipio", "campo1", "sexo", "racaCor", 
+                "dataInternacao", "dataInternacaoRedome", 
+                "dataEncerramento", "dataEncerramentoRedome", 
+                "evolucaoCaso", "evolucaoCasoRedome",
+                "dataNotificacao", "resultadoTeste"));
+
+		
+		SivepRedomeModificadoCSVHandler.criarCSV("./arquivos/csv/SIVEP_REDOME(OBITO-PacientesEntre31E50Anos).csv", registrosSivepFiltrados);
 	}
 
 	private static List<SusRedomeModificadoCSV> obterRegistrosUsadosComResultadoNegativo(List<SusRedomeModificadoCSV> registrosSusFiltradosRegistroSivep, int qtd) throws CsvDataTypeMismatchException, CsvRequiredFieldEmptyException, IOException {

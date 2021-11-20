@@ -4,6 +4,7 @@ public class SusRedomeModificadoCSV {
 	
 	private String campo1;
 	private String municipio;
+	private String filtroAreaMunicipio;
 	private String nomeCompleto;
 	private String cpf;
 	private String dataNascimento;
@@ -49,6 +50,32 @@ public class SusRedomeModificadoCSV {
 		this.sexo = sexo;
 		this.observacaoUso = observacaoUso;
 	}
+	
+	public SusRedomeModificadoCSV(String campo1, String municipio, String filtroAreaMunicipio, String nomeCompleto, String cpf,
+			String dataNascimento, String municipioNotificacao, String racaCor, String etnia, String nomeMae,
+			String dataNotificacao, String idade, String resultadoTeste, String dataTeste, String tipoTeste,
+			String estadoTeste, String evolucaoCaso, String observacaoExclusao, String sexo, String observacaoUso) {
+		this.campo1 = campo1;
+		this.municipio = municipio;
+		this.filtroAreaMunicipio = filtroAreaMunicipio;
+		this.nomeCompleto = nomeCompleto;
+		this.cpf = cpf;
+		this.dataNascimento = dataNascimento;
+		this.municipioNotificacao = municipioNotificacao;
+		this.racaCor = racaCor;
+		this.etnia = etnia;
+		this.nomeMae = nomeMae;
+		this.dataNotificacao = dataNotificacao;
+		this.idade = idade;
+		this.resultadoTeste = resultadoTeste;
+		this.dataTeste = dataTeste;
+		this.tipoTeste = tipoTeste;
+		this.estadoTeste = estadoTeste;
+		this.evolucaoCaso = evolucaoCaso;
+		this.observacaoExclusao = observacaoExclusao;
+		this.sexo = sexo;
+		this.observacaoUso = observacaoUso;
+	}
 
 	public String getCampo1() {
 		return campo1;
@@ -64,6 +91,14 @@ public class SusRedomeModificadoCSV {
 
 	public void setMunicipio(String municipio) {
 		this.municipio = municipio.trim();
+	}
+	
+	public String getFiltroAreaMunicipio() {
+		return filtroAreaMunicipio;
+	}
+
+	public void setFiltroAreaMunicipio(String filtroAreaMunicipio) {
+		this.filtroAreaMunicipio = filtroAreaMunicipio;
 	}
 
 	public String getNomeCompleto() {

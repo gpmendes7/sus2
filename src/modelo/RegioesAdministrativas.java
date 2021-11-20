@@ -45,6 +45,84 @@ public class RegioesAdministrativas {
 											 "São Sebastião do Alto", "Sumidouro", "Teresópolis", 
 											 "Trajano de Moraes"};
 	
+	public static String obterNomeRegiaoMunicipio(String municipio) {
+		String municipioNormalizado = normalizarString(municipio);
+				
+	    for (String municipioRegiao : BAIA_ILHA_GRANDE) {
+	    	String municipioRegiaoNormalizado = normalizarString(municipioRegiao);
+	        
+	    	if (municipioNormalizado.equals(municipioRegiaoNormalizado)) {
+	            return "Baía da Ilha Grande";
+	        }
+	    }
+	    
+	    for (String municipioRegiao : BAIXADA_LITORANEA) {
+	    	String municipioRegiaoNormalizado = normalizarString(municipioRegiao);
+	        
+	    	if (municipioNormalizado.equals(municipioRegiaoNormalizado)) {
+	            return "Baixada Litorânea";
+	        }
+	    }
+	    
+	    for (String municipioRegiao : CENTRO_SUl) {
+	    	String municipioRegiaoNormalizado = normalizarString(municipioRegiao);
+	        
+	    	if (municipioNormalizado.equals(municipioRegiaoNormalizado)) {
+	            return "Centro-Sul";
+	        }
+	    }
+	    
+	    for (String municipioRegiao : MEDIO_PARAIBA) {
+	    	String municipioRegiaoNormalizado = normalizarString(municipioRegiao);
+	        
+	    	if (municipioNormalizado.equals(municipioRegiaoNormalizado)) {
+	            return "Médio Paraíba";
+	        }
+	    }
+	    
+	    for (String municipioRegiao : METROPOLITANA1) {
+	    	String municipioRegiaoNormalizado = normalizarString(municipioRegiao);
+	        
+	    	if (municipioNormalizado.equals(municipioRegiaoNormalizado)) {
+	            return "Metropolitana I";
+	        }
+	    }
+	    
+	    for (String municipioRegiao : METROPOLITANA2) {
+	    	String municipioRegiaoNormalizado = normalizarString(municipioRegiao);
+	        
+	    	if (municipioNormalizado.equals(municipioRegiaoNormalizado)) {
+	            return "Metropolitana II";
+	        }
+	    }
+	    
+	    for (String municipioRegiao : NOROESTE) {
+	    	String municipioRegiaoNormalizado = normalizarString(municipioRegiao);
+	        
+	    	if (municipioNormalizado.equals(municipioRegiaoNormalizado)) {
+	            return "Noroeste";
+	        }
+	    }
+	    
+	    for (String municipioRegiao : NORTE) {
+	    	String municipioRegiaoNormalizado = normalizarString(municipioRegiao);
+	        
+	    	if (municipioNormalizado.equals(municipioRegiaoNormalizado)) {
+	            return "Norte";
+	        }
+	    }
+	    
+	    for (String municipioRegiao : SERRANA) {
+	    	String municipioRegiaoNormalizado = normalizarString(municipioRegiao);
+	        
+	    	if (municipioNormalizado.equals(municipioRegiaoNormalizado)) {
+	            return "Serrana";
+	        }
+	    }
+	    
+	    return null;
+	}
+	
 	public static String[] obterRegiaoMunicipio(String municipio) {
 		String municipioNormalizado = normalizarString(municipio);
 				

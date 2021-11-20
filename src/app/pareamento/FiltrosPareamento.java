@@ -4,6 +4,8 @@ import static app.util.ConversaoSusSivep.converterSexoSivepParaSus;
 import static app.util.DataUtil.alterarDiasEmData;
 import static app.util.DataUtil.dataEstaEmIntervalo;
 import static app.util.StringUtil.normalizarString;
+import static modelo.RegioesAdministrativas.obterNomeRegiaoMunicipio;
+import static modelo.RegioesAdministrativas.obterRegiaoMunicipio;
 
 import java.io.IOException;
 import java.text.ParseException;
@@ -19,7 +21,6 @@ import com.opencsv.exceptions.CsvRequiredFieldEmptyException;
 import app.util.StringUtil;
 import csv.SivepRedomeModificadoCSV;
 import csv.SusRedomeModificadoCSV;
-import modelo.RegioesAdministrativas;
 
 public class FiltrosPareamento {
 	
@@ -50,8 +51,6 @@ public class FiltrosPareamento {
 	}
 	
 	public static List<SusRedomeModificadoCSV> filtrarRegistrosSusPorDataNotificacao(List<SusRedomeModificadoCSV> registrosSus, SivepRedomeModificadoCSV registroSivepFiltrado, int numeroSemanas) throws CsvDataTypeMismatchException, CsvRequiredFieldEmptyException, IOException, ParseException {
-		//System.out.println("registroSivepFiltrado.getDataNotificacao(): " + registroSivepFiltrado.getDataNotificacao());
-		
 		SimpleDateFormat sdf1 = new SimpleDateFormat("dd/MM/yyyy");
 		Date dataNotificacaoSivep = sdf1.parse(registroSivepFiltrado.getDataNotificacao());
 		Date data1 = alterarDiasEmData(dataNotificacaoSivep, numeroSemanas * -7);
@@ -73,13 +72,17 @@ public class FiltrosPareamento {
 	
 	
 	public static List<SusRedomeModificadoCSV> filtrarRegistrosSusPorMunicipio(List<SusRedomeModificadoCSV> registrosSus, SivepRedomeModificadoCSV registroSivepFiltrado) throws CsvDataTypeMismatchException, CsvRequiredFieldEmptyException, IOException {	
-		return registrosSus.stream()
+		List<SusRedomeModificadoCSV> registrosSusFiltradosPorMunicipio = registrosSus.stream()
 						   .filter(r -> StringUtil.normalizarString(r.getMunicipio()).equals(StringUtil.normalizarString(registroSivepFiltrado.getMunicipio())))
 						   .collect(Collectors.toList());
+		
+		registrosSusFiltradosPorMunicipio.stream().forEach(r -> r.setFiltroAreaMunicipio(r.getMunicipio()));
+		
+		return registrosSusFiltradosPorMunicipio;
 	}
 	
 	public static List<SusRedomeModificadoCSV> filtrarRegistrosSusPorAreaMunicipio(List<SusRedomeModificadoCSV> registrosSus, SivepRedomeModificadoCSV registroSivepFiltrado) throws CsvDataTypeMismatchException, CsvRequiredFieldEmptyException, IOException {	
-		String[] regiao = RegioesAdministrativas.obterRegiaoMunicipio(registroSivepFiltrado.getMunicipio());
+		String[] regiao = obterRegiaoMunicipio(registroSivepFiltrado.getMunicipio());
 		List<SusRedomeModificadoCSV> registrosSusFiltradosPorAreaMunicipio = new ArrayList<SusRedomeModificadoCSV>();
 		
 		for (SusRedomeModificadoCSV registroSus : registrosSus) {
@@ -94,6 +97,8 @@ public class FiltrosPareamento {
 			}
 			
 		}
+		
+		registrosSusFiltradosPorAreaMunicipio.stream().forEach(r -> r.setFiltroAreaMunicipio(obterNomeRegiaoMunicipio(r.getMunicipio())));
 		
 		return registrosSusFiltradosPorAreaMunicipio;
 	}
