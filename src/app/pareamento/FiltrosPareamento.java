@@ -82,24 +82,27 @@ public class FiltrosPareamento {
 	}
 	
 	public static List<SusRedomeModificadoCSV> filtrarRegistrosSusPorAreaMunicipio(List<SusRedomeModificadoCSV> registrosSus, SivepRedomeModificadoCSV registroSivepFiltrado) throws CsvDataTypeMismatchException, CsvRequiredFieldEmptyException, IOException {	
-		String[] regiao = obterRegiaoMunicipio(registroSivepFiltrado.getMunicipio());
 		List<SusRedomeModificadoCSV> registrosSusFiltradosPorAreaMunicipio = new ArrayList<SusRedomeModificadoCSV>();
 		
-		for (SusRedomeModificadoCSV registroSus : registrosSus) {
-			String municipioRegistroNormalizado = normalizarString(registroSus.getMunicipio());
-			
-			for (String municipioRegiao : regiao) {
-				String municipioRegiaoNormalizado = normalizarString(municipioRegiao);
-						
-				if(municipioRegistroNormalizado.equals(municipioRegiaoNormalizado)) {
-					registrosSusFiltradosPorAreaMunicipio.add(registroSus);
+		String[] regiao = obterRegiaoMunicipio(registroSivepFiltrado.getMunicipio());
+		
+		if(regiao != null) {
+			for (SusRedomeModificadoCSV registroSus : registrosSus) {
+				String municipioRegistroNormalizado = normalizarString(registroSus.getMunicipio());
+				
+				for (String municipioRegiao : regiao) {
+					String municipioRegiaoNormalizado = normalizarString(municipioRegiao);
+							
+					if(municipioRegistroNormalizado.equals(municipioRegiaoNormalizado)) {
+						registrosSusFiltradosPorAreaMunicipio.add(registroSus);
+					}
 				}
+				
 			}
 			
+			registrosSusFiltradosPorAreaMunicipio.stream().forEach(r -> r.setFiltroAreaMunicipio(obterNomeRegiaoMunicipio(r.getMunicipio())));
 		}
-		
-		registrosSusFiltradosPorAreaMunicipio.stream().forEach(r -> r.setFiltroAreaMunicipio(obterNomeRegiaoMunicipio(r.getMunicipio())));
-		
+
 		return registrosSusFiltradosPorAreaMunicipio;
 	}
 	

@@ -28,7 +28,7 @@ import csv.SusRedomeModificado2CSVHandler;
 import csv.SusRedomeModificadoCSV;
 import csv.SusRedomeModificadoCSVHandler;
 
-public class ParearPacientesCOVIDComEvolucaoCasoObito {
+public class ParearPacientesCOVIDComEvolucaoCasoInternado {
 	
 	private static List<SivepRedomeModificadoCSV> registrosSivep;
 	private static List<SusRedomeModificadoCSV> registrosSus;
@@ -37,33 +37,33 @@ public class ParearPacientesCOVIDComEvolucaoCasoObito {
 	private static FileWriter fileWriter;
 	
 	public static void main(String[] args) throws Exception {
-		registrosSivep = SivepRedomeModificadoCSVHandler.carregarCSV("./arquivos/csv/obito/SIVEP_REDOME(Modificado-OBITO).csv");
-		registrosSus = SusRedomeModificadoCSVHandler.carregarCSV("./arquivos/csv/Sus_REDOME(SemRegistrosComObservacaoExclusao).csv");
+		registrosSivep = SivepRedomeModificadoCSVHandler.carregarCSV("./arquivos/csv/internado/SIVEP_REDOME(Modificado-INTERNADO).csv");
+		registrosSus = SusRedomeModificadoCSVHandler.carregarCSV("./arquivos/csv/Sus_REDOME(AposUsoUTI).csv");
 		registrosSusAtualizado = new ArrayList<>(registrosSus);
 		
-		parearPacientesEntreSivepESus(31, 
-				                      50, 
-			                          "./arquivos/txt/obito/RegistrosUsados(PacientesObitoEntre31E50Anos).txt",
-			                          "./arquivos/csv/obito/Sus_REDOME(PacientesObitoEntre31E50AnosResultadoPositivo).csv", 
-			                          "./arquivos/csv/obito/Sus_REDOME(PacientesObitoEntre31E50AnosResultadoNegativo).csv",
-			                          "./arquivos/csv/obito/SIVEP_REDOME(OBITO-PacientesUsadosEntre31E50Anos).csv",
-			                          "./arquivos/csv/obito/SIVEP_REDOME(OBITO-PacientesNaoUsadosEntre31E50Anos).csv");
+		parearPacientesEntreSivepESus(25, 
+				                      44, 
+			                          "./arquivos/txt/internado/RegistrosUsados(PacientesInternadoEntre25E44Anos).txt",
+			                          "./arquivos/csv/internado/Sus_REDOME(PacientesInternadoEntre25E44AnosResultadoPositivo).csv", 
+			                          "./arquivos/csv/internado/Sus_REDOME(PacientesInternadoEntre25E44AnosResultadoNegativo).csv",
+			                          "./arquivos/csv/internado/SIVEP_REDOME(INTERNADO-PacientesUsadosEntre25E44Anos).csv",
+			                          "./arquivos/csv/internado/SIVEP_REDOME(INTERNADO-PacientesNaoUsadosEntre25E44Anos).csv");
 		
-		parearPacientesEntreSivepESus(51, 
-					                  59, 
-					                  "./arquivos/txt/obito/RegistrosUsados(PacientesObitoEntre51E59Anos).txt",
-					                  "./arquivos/csv/obito/Sus_REDOME(PacientesObitoEntre51E59AnosResultadoPositivo).csv", 
-					                  "./arquivos/csv/obito/Sus_REDOME(PacientesObitoEntre51E59AnosResultadoNegativo).csv",
-					                  "./arquivos/csv/obito/SIVEP_REDOME(OBITO-PacientesUsadosEntre51E59Anos).csv",
-					                  "./arquivos/csv/obito/SIVEP_REDOME(OBITO-PacientesNaoUsadosEntre51E59Anos).csv");
+		parearPacientesEntreSivepESus(45, 
+					                  56, 
+					                  "./arquivos/txt/internado/RegistrosUsados(PacientesInternadoEntre45E56Anos).txt",
+					                  "./arquivos/csv/internado/Sus_REDOME(PacientesInternadoEntre45E56AnosResultadoPositivo).csv", 
+					                  "./arquivos/csv/internado/Sus_REDOME(PacientesInternadoEntre45E56AnosResultadoNegativo).csv",
+					                  "./arquivos/csv/internado/SIVEP_REDOME(INTERNADO-PacientesUsadosEntre45E56Anos).csv",
+					                  "./arquivos/csv/internado/SIVEP_REDOME(INTERNADO-PacientesNaoUsadosEntre45E56Anos).csv");
 		
-		parearPacientesEntreSivepESus(60, 
-						              75, 
-						              "./arquivos/txt/obito/RegistrosUsados(PacientesObitoEntre60E75Anos).txt",
-						              "./arquivos/csv/obito/Sus_REDOME(PacientesObitoEntre60E75AnosResultadoPositivo).csv", 
-						              "./arquivos/csv/obito/Sus_REDOME(PacientesObitoEntre60E75AnosResultadoNegativo).csv",
-						              "./arquivos/csv/obito/SIVEP_REDOME(OBITO-PacientesUsadosEntre60E75Anos).csv",
-						              "./arquivos/csv/obito/SIVEP_REDOME(OBITO-PacientesNaoUsadosEntre60E75Anos).csv");
+		parearPacientesEntreSivepESus(57, 
+					                  81, 
+					                  "./arquivos/txt/internado/RegistrosUsados(PacientesInternadoEntre57E81Anos).txt",
+					                  "./arquivos/csv/internado/Sus_REDOME(PacientesInternadoEntre57E81AnosResultadoPositivo).csv", 
+					                  "./arquivos/csv/internado/Sus_REDOME(PacientesInternadoEntre57E81AnosResultadoNegativo).csv",
+					                  "./arquivos/csv/internado/SIVEP_REDOME(INTERNADO-PacientesUsadosEntre57E81Anos).csv",
+					                  "./arquivos/csv/internado/SIVEP_REDOME(INTERNADO-PacientesNaoUsadosEntre57E81Anos).csv");			
 		
 		registrosSusAtualizado.add(0, new SusRedomeModificadoCSV("campo1", "municipio", "nomeCompleto", 
                 "cpf", "dataNascimento", "municipioNotificacao", 
@@ -71,7 +71,7 @@ public class ParearPacientesCOVIDComEvolucaoCasoObito {
                 "dataNotificacao", "idade", "resultadoTeste", "dataTeste", "tipoTeste",
                 "estadoTeste", "evolucaoCaso", "observacaoExclusao", "sexo", "observacaoUso"));
 
-        SusRedomeModificadoCSVHandler.criarCSV("./arquivos/csv/Sus_REDOME(AposUsoObito).csv", registrosSusAtualizado);
+        SusRedomeModificadoCSVHandler.criarCSV("./arquivos/csv/Sus_REDOME(AposUsoInternado).csv", registrosSusAtualizado);
  
 	}
 	
@@ -247,6 +247,7 @@ public class ParearPacientesCOVIDComEvolucaoCasoObito {
                 "evolucaoCaso", "evolucaoCasoRedome",
                 "dataNotificacao", "resultadoTeste"));
 
+		
 		SivepRedomeModificadoCSVHandler.criarCSV(csvSivepUsados, registrosSivepFiltrados);
 		
 		registrosSivepNaoUsados.add(0, new SivepRedomeModificadoCSV("identificacao", "nomeCompleto", "dataNascimento", "idade", 
@@ -265,7 +266,7 @@ public class ParearPacientesCOVIDComEvolucaoCasoObito {
 		
 		registrosSusAtualizado.removeAll(registrosSusFiltradosComResultadoNegativo);
 
-		registrosSusFiltradosComResultadoNegativo.stream().limit(qtd).forEach(r -> r.setObservacaoUso("Registro usado por Obito"));
+		registrosSusFiltradosComResultadoNegativo.stream().limit(qtd).forEach(r -> r.setObservacaoUso("Registro usado por Internado"));
 		
 		registrosSusAtualizado.addAll(registrosSusFiltradosComResultadoNegativo);
 				
@@ -285,7 +286,7 @@ public class ParearPacientesCOVIDComEvolucaoCasoObito {
 		
 		registrosSusAtualizado.removeAll(registrosSusFiltradosComResultadoPositivo);
 		
-		registrosSusFiltradosComResultadoPositivo.stream().limit(qtd).forEach(r -> r.setObservacaoUso("Registro usado por Obito"));
+		registrosSusFiltradosComResultadoPositivo.stream().limit(qtd).forEach(r -> r.setObservacaoUso("Registro usado por Internado"));
 		
 		registrosSusAtualizado.addAll(registrosSusFiltradosComResultadoPositivo);	
 		
