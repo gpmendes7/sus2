@@ -16,7 +16,7 @@ import com.opencsv.bean.StatefulBeanToCsvBuilder;
 import com.opencsv.exceptions.CsvDataTypeMismatchException;
 import com.opencsv.exceptions.CsvRequiredFieldEmptyException;
 
-public class SusRedomeModificado2CSVHandler {
+public class SusRedomeModificadoCSVHandler2 {
 	
 	private static ColumnPositionMappingStrategy<SusRedomeModificadoCSV> strategy;
 	
