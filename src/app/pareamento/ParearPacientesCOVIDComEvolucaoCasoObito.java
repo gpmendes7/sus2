@@ -3,7 +3,7 @@ package app.pareamento;
 public class ParearPacientesCOVIDComEvolucaoCasoObito {
 	
 	public static void main(String[] args) throws Exception {
-		Pareamento pareamento = new Pareamento("Registro usado por Obito");
+		Pareamento pareamento = new Pareamento("Obito");
 		
 		pareamento.carregarArquivosCSV("./arquivos/csv/obito/SIVEP_REDOME(Modificado-OBITO).csv", 
 				                       "./arquivos/csv/Sus_REDOME(SemRegistrosComObservacaoExclusao).csv");

@@ -35,10 +35,10 @@ public class Pareamento {
 	private List<SusRedomeModificadoCSV> registrosSusAtualizado;
 	private File file;
 	private FileWriter fileWriter;
-	private String mensagemUso;
+	private String situacao;
 	
-	public Pareamento(String mensagemUso) {
-		this.mensagemUso = mensagemUso;
+	public Pareamento(String situacao) {
+		this.situacao = situacao;
 	}
 
 	public void carregarArquivosCSV(String csvSivep, String csvSus) throws IOException {
@@ -70,7 +70,7 @@ public class Pareamento {
 		fileWriter = new FileWriter(file);
 
 		fileWriter.write("***************************\n");
-		fileWriter.write("Número de registros do sivep com evolução caso Obito na faixa etaria de " + idadeMinima
+		fileWriter.write("Número de registros do sivep com evolução caso " + situacao + " na faixa etaria de " + idadeMinima
 				+ " a " + idadeMaxima + " anos usados para filtrar registros no sus: " + registrosSivepFiltrados.size()
 				+ "\n");
 		fileWriter.write("***************************\n");
@@ -269,7 +269,7 @@ public class Pareamento {
 		registrosSusAtualizado.removeAll(registrosSusFiltradosComResultadoNegativo);
 
 		registrosSusFiltradosComResultadoNegativo.stream().limit(qtd)
-				.forEach(r -> r.setObservacaoUso(mensagemUso));
+				.forEach(r -> r.setObservacaoUso("Registro usado por " + situacao));
 
 		registrosSusAtualizado.addAll(registrosSusFiltradosComResultadoNegativo);
 
@@ -294,7 +294,7 @@ public class Pareamento {
 		registrosSusAtualizado.removeAll(registrosSusFiltradosComResultadoPositivo);
 
 		registrosSusFiltradosComResultadoPositivo.stream().limit(qtd)
-				.forEach(r -> r.setObservacaoUso(mensagemUso));
+				.forEach(r -> r.setObservacaoUso("Registro usado por " + situacao));
 
 		registrosSusAtualizado.addAll(registrosSusFiltradosComResultadoPositivo);
 
