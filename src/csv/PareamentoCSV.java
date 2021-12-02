@@ -7,6 +7,7 @@ public class PareamentoCSV {
 	private String nomeCompleto;
 	private String cpf;
 	private String municipio;
+	private String regiao;
 	private String filtroAreaMunicipio;
 	private String dataNotificacao;
 	private String sexo;
@@ -23,7 +24,7 @@ public class PareamentoCSV {
 	
 	}
 	
-	public PareamentoCSV(String campo1, String identificacao, String nomeCompleto, String cpf, String municipio,
+	public PareamentoCSV(String campo1, String identificacao, String nomeCompleto, String cpf, String municipio, String regiao,
 			String filtroAreaMunicipio, String dataNotificacao, String sexo, String idade, String racaCor,
 			String tipoTeste, String resultadoTeste, String desfecho, String origem, String evolucaoCaso,
 			String intervalo) {
@@ -32,6 +33,7 @@ public class PareamentoCSV {
 		this.nomeCompleto = nomeCompleto;
 		this.cpf = cpf;
 		this.municipio = municipio;
+		this.regiao = regiao;
 		this.filtroAreaMunicipio = filtroAreaMunicipio;
 		this.dataNotificacao = dataNotificacao;
 		this.sexo = sexo;
@@ -83,6 +85,14 @@ public class PareamentoCSV {
 
 	public void setMunicipio(String municipio) {
 		this.municipio = municipio;
+	}
+	
+	public String getRegiao() {
+		return regiao;
+	}
+
+	public void setRegiao(String regiao) {
+		this.regiao = regiao;
 	}
 
 	public String getFiltroAreaMunicipio() {

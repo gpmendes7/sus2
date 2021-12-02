@@ -10,7 +10,10 @@ public class StringUtil {
 	}
 	
 	public static String normalizarString(String string) {
-		return removeAcentos(string).toUpperCase().trim();
+		if(string != null)
+		   return removeAcentos(string).toUpperCase().trim();
+		else
+			return "";
 	}
 
 }

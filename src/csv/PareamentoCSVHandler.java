@@ -24,7 +24,7 @@ public class PareamentoCSVHandler {
 		strategy = new ColumnPositionMappingStrategy<PareamentoCSV>();
 		strategy.setType(PareamentoCSV.class);
 
-		String[] colunas = { "campo1", "identificacao", "nomeCompleto", "cpf", "municipio",
+		String[] colunas = { "campo1", "identificacao", "nomeCompleto", "cpf", "municipio", "regiao",
 							 "filtroAreaMunicipio", "dataNotificacao", "sexo", "idade", "racaCor",
 							 "tipoTeste", "resultadoTeste", "desfecho", "origem", "evolucaoCaso",
 							 "intervalo"};
