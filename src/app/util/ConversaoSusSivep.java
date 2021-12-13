@@ -16,7 +16,7 @@ public class ConversaoSusSivep {
 	
 	public static String converterDataNotificacaoSusParaSivep(String dataNotificacaoSivep) throws ParseException {
 		SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSSSS");
-		SimpleDateFormat sdf2 = new SimpleDateFormat("dd/MM/YYYY");
+		SimpleDateFormat sdf2 = new SimpleDateFormat("dd/MM/yyyy");
 		
 	    Date dataNotificacao = sdf1.parse(dataNotificacaoSivep);
 			

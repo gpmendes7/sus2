@@ -21,7 +21,7 @@ import csv.SusRedomeCSVHandler;
 public class EliminarRegistrosPresentesNoSivep {
 	
 	public static void main(String[] args) throws IOException, ParseException, CsvDataTypeMismatchException, CsvRequiredFieldEmptyException {
-		List<SusRedomeCSV> registrosSus = SusRedomeCSVHandler.carregarCSV("./arquivos/csv/Sus_REDOME.csv");
+		List<SusRedomeCSV> registrosSus = SusRedomeCSVHandler.carregarCSV("./arquivos/csv/Sus_REDOME(SemCopias).csv");
 		System.out.println("registrosSus.size(): " + registrosSus.size());
 		
 		List<SusRedomeCSV> registrosSusSemCopia = obterRegistrosSemCopias(registrosSus);

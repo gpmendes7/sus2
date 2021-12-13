@@ -4,7 +4,7 @@ import static app.util.StringUtil.normalizarString;
 
 public class RegioesAdministrativas {
 	
-	private static final String[] BAIA_ILHA_GRANDE = {"Angra dos Reis", "Mangaratiba", "Paraty"};
+	private static final String[] BAIA_ILHA_GRANDE = {"Angra dos Reis", "Mangaratiba", "Paraty", "Parati"};
 	
 	private static final String[] BAIXADA_LITORANEA = {"Araruama", "Armação dos Búzios", "Arraial do Cabo", "Cabo Frio", 
 													   "Casimiro de Abreu", "Iguaba Grande", "Rio das Ostras", 
@@ -28,7 +28,7 @@ public class RegioesAdministrativas {
 													"Rio Bonito", "São Gonçalo", "Silva Jardim", 
 													"Tanguá"};
 	
-	private static final String[] NOROESTE = {"Aperibé", "Bom Jesus de Itabapoana", "Cambuci", 
+	private static final String[] NOROESTE = {"Aperibé", "Bom Jesus de Itabapoana", "Bom Jesus do Itabapoana", "Cambuci", 
 											  "Cardoso Moreira", "Italva", "Itaocara",
 											  "Itaperuna", "Laje do Muriaé", "Miracema",
 											  "Natividade", "Porciúncula", "Santo Antônio de Pádua", 
